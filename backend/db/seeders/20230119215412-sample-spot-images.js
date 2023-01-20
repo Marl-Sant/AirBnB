@@ -12,9 +12,34 @@ module.exports = {
     options.tableName = 'SpotImages';
     await queryInterface.bulkInsert(options, [{
       spotId: 1,
-      imageURL: "https://imgur.com/a/PEQkQCf",
+      imageURL: "PREVIEW IMAGE URL 1",
       previewImage: true
-    }
+    },
+    {
+      spotId: 1,
+      imageURL: "NONPREVIEW IMAGE URL 1",
+      previewImage: false
+    },
+    {
+      spotId: 2,
+      imageURL: "PREVIEW IMAGE URL 2",
+      previewImage: true
+    },
+    {
+      spotId: 2,
+      imageURL: "NONPREVIEW IMAGE URL 1",
+      previewImage: false
+    },
+    {
+      spotId: 3,
+      imageURL: "PREVIEW IMAGE URL 3",
+      previewImage: true
+    }, 
+    {
+      spotId: 1,
+      imageURL: "NONPREVIEW IMAGE URL 1",
+      previewImage: false
+    },
    ], {});
   },
 
@@ -22,7 +47,7 @@ module.exports = {
     options.tableName = 'SpotImages';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      imageURL: { [Op.in]: ["https://imgur.com/a/PEQkQCf"] }
+      imageURL: { [Op.in]: ["PREVIEW IMAGE URL 1","NONPREVIEW IMAGE URL 1","PREVIEW IMAGE URL 2","PREVIEW IMAGE URL 3",] }
     }, {});
   }
 };
