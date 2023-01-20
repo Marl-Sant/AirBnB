@@ -28,9 +28,11 @@ module.exports = (sequelize, DataTypes) => {
         return await User.scope('currentUser').findByPk(user.id);
       }
     }
-    static async signup({ username, email, password }) {
+    static async signup({ firstName, lastName, username, email, password }) {
       const hashedPassword = bcrypt.hashSync(password);
       const user = await User.create({
+        firstName,
+        lastName,
         username,
         email,
         hashedPassword
@@ -63,11 +65,21 @@ module.exports = (sequelize, DataTypes) => {
       },
       firstName:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          lengthError(value){
+            if(!Validator.len(value, 2, 15)){
+              throw new Error("First name must be between 2 - 15 characters long")
+            }
+          }
+        }
       },
       lastName:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+          len: [2, 15]
+        }
       },
       email: {
         type: DataTypes.STRING,
