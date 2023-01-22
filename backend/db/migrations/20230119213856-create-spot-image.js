@@ -21,7 +21,8 @@ module.exports = {
         references: {
           model: "Spots",
           key: "id"
-        }
+        },
+        onDelete:"CASCADE"
       },
       imageURL: {
         type: Sequelize.STRING,
