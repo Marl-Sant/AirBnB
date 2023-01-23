@@ -53,36 +53,9 @@ const validateSpotInfo = [
 
 router.get('/', async (req, res, next)=> {
 
-// let {size,page} = req.query
-//   let pagination = {}
-//   if (!page || isNaN(page)) {page = 1}
-//   if (!size || isNaN(size)) {size = 20}
-//   if(page <=0 ){
-//     res.status(400)
-//     return res.json({
-//       message: "Validation Error",
-//       statusCode: 400,
-//       errors: {
-//         page: "Page must be greater than or equal to 1"}})
-//   }
-//   if(size <=0 ){
-//     res.status(400)
-//     return res.json({
-//       message: "Validation Error",
-//       statusCode: 400,
-//       errors: {
-//         size: "Size must be greater than or equal to 1"}})
-//   }
-//   page = parseInt(page);
-//   size = parseInt(size);
-//   if (page >= 1 && size >= 1) {
-//     pagination.limit = size
-//     pagination.offset = size * (page - 1)
-//   }
-
 
     let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
-    console.log(page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice)
+
     if(page <= 0){
         res.status(400)
         return res.json({
@@ -99,6 +72,46 @@ router.get('/', async (req, res, next)=> {
               errors: {
                 page: "Size must be greater than or equal to 1"}})
     }
+    if(maxLat > 90){
+        res.status(400)
+        return res.json({
+        message: "Validation Error",
+        statusCode: 400,
+              errors: {
+                page: "Maximum latitude is invalid"}})
+    }
+    if(minLat < -90){
+        res.status(400)
+        return res.json({
+        message: "Validation Error",
+        statusCode: 400,
+              errors: {
+                page: "Minimum latitude is invalid"}})
+    }
+    if(minLng < -180){
+        res.status(400)
+        return res.json({
+        message: "Validation Error",
+        statusCode: 400,
+              errors: {
+                page: "Minimum longitude is invalid"}})
+    }
+    if(maxLng > 180){
+        res.status(400)
+        return res.json({
+        message: "Validation Error",
+        statusCode: 400,
+              errors: {
+                page: "Maximum longitude is invalid"}})
+    }
+    if(maxPrice < 0){
+        res.status(400)
+        return res.json({
+        message: "Validation Error",
+        statusCode: 400,
+              errors: {
+                page: "Maximum price must be greater than or equal to 0"}})
+    }
 
       if (!page || isNaN(page) || page > 10) {page = 1}
       if (!size || isNaN(size)|| size > 20) {size = 20}  
@@ -107,20 +120,29 @@ router.get('/', async (req, res, next)=> {
       if (!minLng){minLng = -180}
       if (!maxLng){maxLng = 180}
       if (!minPrice){minPrice = 1}
-      if (!maxPrice){maxPrice = 5000}
-      console.log(page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice)
+      if (!maxPrice){maxPrice = 100000}
+      
     const searchedSpots = await Spot.findAll({
         where:{
             lat: {[Op.between]: [minLat, maxLat]},
             lng: {[Op.between]: [minLng, maxLng]},
             price: {[Op.between]: [minPrice, maxPrice]},
         },
+        attributes:{
+            include:[
+                [sequelize.literal(
+                    `(SELECT imageURL
+                    FROM SpotImages
+                    WHERE spotId = Spot.id AND previewImage = true)`
+                ), "previewImage"]
+            ]
+        },
         limit: size,
         offset: (page - 1)* size
     })
     searchedSpots.page = page
     searchedSpots.size = size
-    res.status(200).json(searchedSpots)
+    res.status(200).json({searchedSpots, page, size})
 })
 
 router.post('/:spotId/spotImages', requireAuth, async (req, res, next) => {
