@@ -51,7 +51,7 @@ const validateSpotInfo = [
 ];
 
 
-router.get('/', async (req, res, next)=> {
+router.get('/search', async (req, res, next)=> {
 
 
     let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
@@ -147,23 +147,30 @@ router.get('/', async (req, res, next)=> {
 
 router.post('/:spotId/spotImages', requireAuth, async (req, res, next) => {
     
-    if(!await Spot.findByPk(req.params.spotId)){
+    const spotLocator = await Spot.findByPk(req.params.spotId)
+
+    if(!spotLocator){
         res.status(404)
         res.json({
             message: "Spot couldn't be found",
             statusCode: 404
         })
+    }else{
+        if(spotLocator.ownerId === req.user.id){
+        const { url, preview } = req.body
+    
+        const freshPic = await SpotImage.create({
+            spotId: req.params.spotId,
+            imageURL: url,
+            previewImage: preview
+        })
+    
+        res.json(freshPic)}
+        if(spotLocator.ownerId !== req.user.id){
+            res.status(401).json({message:"Unauthorized action. Only the spot owner can add new image", status: 401})
+        }
     }
 
-    const { url, preview } = req.body
-
-    const freshPic = await SpotImage.create({
-        spotId: req.params.spotId,
-        imageURL: url,
-        previewImage: preview
-    })
-
-    res.json(freshPic)
 })
 
 

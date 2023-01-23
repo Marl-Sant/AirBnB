@@ -22,7 +22,7 @@ module.exports = {
         price: 143
       },
     {
-      ownerId: 4,
+      ownerId: 2,
       address: "18320 Colorado Circle",
       city: "Boca Raton",
       state: "Fl",
