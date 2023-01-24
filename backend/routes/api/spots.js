@@ -1,5 +1,5 @@
 const express = require('express');
-const { Spot, SpotImage, User } = require('../../db/models');
+const { Spot, SpotImage, User, Review } = require('../../db/models');
 const sequelize = require("sequelize")
 const { check } = require('express-validator');
 const { requireAuth } = require('../../utils/auth')
@@ -28,7 +28,6 @@ const validateSpotInfo = [
         .exists({ checkFalsy: true })
         .notEmpty()
         .isDecimal({ checkFalsy: true })
-
         .withMessage('Latitude is not valid'),
     check('lng')
         .exists({ checkFalsy: true })
@@ -54,7 +53,21 @@ const validateSpotInfo = [
     handleValidationErrors
 ];
 
+const validateReviewInfo =[
+    check('review')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage('Review must contain text'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isInt({min: 1, max: 5})
+        .toFloat()
+        .withMessage('Must be a number between 1 to 5'),
+    handleValidationErrors
+]
 
+
+//SEARCH THROUGH SPOTS
 router.get('/search', async (req, res, next) => {
 
 
@@ -163,6 +176,8 @@ router.get('/search', async (req, res, next) => {
     res.status(200).json({ searchedSpots, page, size })
 })
 
+
+//ADD IMAGE TO SPOT BASED ON SPOT ID
 router.post('/:spotId/spotImages', requireAuth, async (req, res, next) => {
 
     const spotLocator = await Spot.findByPk(req.params.spotId)
@@ -196,7 +211,32 @@ router.post('/:spotId/spotImages', requireAuth, async (req, res, next) => {
 
 })
 
+//ADD REVIEW TO SPOT BASED ON SPOT ID
+router.post('/:spotId/reviews', validateReviewInfo, requireAuth, async (req, res, next) => {
+    if(!await Spot.findByPk(req.params.spotId)){
+        res.status(404)
+        res.json({
+            message: "Spot is not found",
+            status: 404
+        })
+    }
+    if(await Review.findAll({where:{userId: req.user.id, spotId: Number(req.params.spotId)}})){
+        res.status(403),
+        res.json({message:"User already has a review for this spot", statusCode: 403})
+    }
+    const {review , stars} = req.body
 
+    const newReview = await Review.create({
+        userId: req.user.id,
+        spotId: Number(req.params.spotId),
+        review: review,
+        stars: stars
+    })
+
+    res.json({newReview})
+})
+
+//CREATE A NEW SPOT
 router.post('/', validateSpotInfo, requireAuth, async (req, res, next) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body
     const newSpot = await Spot.create({
@@ -215,6 +255,8 @@ router.post('/', validateSpotInfo, requireAuth, async (req, res, next) => {
     res.json(newSpot)
 })
 
+
+//DELETE A SPOT
 router.delete("/:spotId", requireAuth, async (req, res, next) => {
     const toBeDeleted = await Spot.findByPk(req.params.spotId)
 
@@ -277,7 +319,7 @@ router.get('/session', requireAuth, async (req, res, next) => {
     res.json(mySpots)
 })
 
-
+//FIND SPOT BASED ON ID
 router.get('/:spotId', async (req, res, next) => {
 
     const foundSpot = await Spot.findOne({
@@ -304,10 +346,10 @@ router.get('/:spotId', async (req, res, next) => {
     res.json(foundSpot)
 })
 
+//EDIT A SPOT BASED ON ID
 router.put('/:spotId', validateSpotInfo, requireAuth, async (req, res, next) => {
 
     const editSpot = await Spot.findByPk(req.params.spotId)
-    //checking to see if spot exists
     if (!editSpot) {
         res.status(404)
         res.json({
@@ -315,7 +357,7 @@ router.put('/:spotId', validateSpotInfo, requireAuth, async (req, res, next) => 
             statusCode: 404
         })
     }
-    //checking to see if current user is owner
+   
     if (editSpot.ownerId === req.user.id) {
         const { address, city, state, country, lat, lng, name, description, price } = req.body
 

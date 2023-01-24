@@ -41,10 +41,26 @@ module.exports = {
       country: "USA",
       lat: 41.466282,
       lng: 11.95874,
-      name: "2300 square feet",
-      description: "Duplex property",
+      name: "Small seaside condo",
+      description: "Guest house on location",
       price: 122
-    }], {});
+    }, 
+    {
+      ownerId: 4,
+      address: "115478 Congress Ave",
+      city: "Delray Beach",
+      state: "Fl",
+      country: "USA",
+      lat: 41.466282,
+      lng: 11.95874,
+      name: "Villa",
+      description: "Located in retirement village - 55+ older renters only",
+      price: 122
+    },
+  
+  
+  
+  ], {});
 
   },
 

@@ -36,10 +36,20 @@ module.exports = {
       previewImage: true
     }, 
     {
-      spotId: 1,
+      spotId: 3,
       imageURL: "NONPREVIEW IMAGE URL 1",
       previewImage: false
-    },
+    }, 
+    {
+      spotId: 4,
+      imageURL: "PREVIEW IMAGE URL 3",
+      previewImage: true
+    }, 
+    {
+      spotId: 4,
+      imageURL: "NONPREVIEW IMAGE URL 1",
+      previewImage: false
+    }
    ], {});
   },
 

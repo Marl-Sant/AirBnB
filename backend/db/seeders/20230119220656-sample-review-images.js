@@ -12,7 +12,31 @@ module.exports = {
     options.tableName = 'ReviewImages';
     await queryInterface.bulkInsert(options, [{
       reviewId: 1,
-      imageURL: "https://imgur.com/a/PEQkQCf"
+      imageURL: "FIRST PIC URL"
+    },
+    {
+      reviewId: 1,
+      imageURL: "SECOND PIC URL"
+    },
+    {
+      reviewId: 1,
+      imageURL: "THIRD PIC URL"
+    },
+    {
+      reviewId: 2,
+      imageURL: "FIRST PIC URL"
+    },
+    {
+      reviewId: 2,
+      imageURL: "SECOND PIC URL"
+    },
+    {
+      reviewId: 2,
+      imageURL: "THIRD PIC URL"
+    },
+    {
+      reviewId: 3,
+      imageURL: "FIRST PIC URL"
     }
    ], {});
   },
