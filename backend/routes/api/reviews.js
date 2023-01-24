@@ -21,11 +21,12 @@ router.post("/:reviewId/reviewImages", requireAuth,  async (req, res, next)=> {
         })
     }
 
-    if(review.userId !== req.user.userId){
+    //NOT STOPPING IMAGE FROM BEING INSERTED INTO DB
+    if(review.userId !== req.user.id){
         res.status(401)
         res.json({
             message: "Operation failed. Must be owner of review to add image",
-            statusCode: 404
+            statusCode: 401
         })
     }
 
