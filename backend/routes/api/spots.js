@@ -4,7 +4,7 @@ const sequelize = require("sequelize")
 const { check } = require('express-validator');
 const { requireAuth } = require('../../utils/auth')
 const { handleValidationErrors } = require('../../utils/validation');
-const {Op} = require("sequelize")
+const { Op } = require("sequelize")
 const router = express.Router();
 
 const validateSpotInfo = [
@@ -28,11 +28,13 @@ const validateSpotInfo = [
         .exists({ checkFalsy: true })
         .notEmpty()
         .isDecimal({ checkFalsy: true })
+
         .withMessage('Latitude is not valid'),
     check('lng')
         .exists({ checkFalsy: true })
         .notEmpty()
         .isDecimal({ checkFalsy: true })
+        .toFloat()
         .withMessage('Latitude is not valid'),
     check('name')
         .exists({ checkFalsy: true })
@@ -46,90 +48,106 @@ const validateSpotInfo = [
     check('price')
         .exists({ checkFalsy: true })
         .notEmpty()
+        .isDecimal({ checkFalsy: true })
+        .toFloat()
         .withMessage('Price is required'),
     handleValidationErrors
 ];
 
 
-router.get('/search', async (req, res, next)=> {
+router.get('/search', async (req, res, next) => {
 
 
-    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice} = req.query
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
 
-    if(page <= 0){
+    if (page <= 0) {
         res.status(400)
         return res.json({
-        message: "Validation Error",
-        statusCode: 400,
-              errors: {
-                page: "Page must be greater than or equal to 1"}})
+            message: "Validation Error",
+            statusCode: 400,
+            errors: {
+                page: "Page must be greater than or equal to 1"
+            }
+        })
     }
-    if(size <= 0){
+    if (size <= 0) {
         res.status(400)
         return res.json({
-        message: "Validation Error",
-        statusCode: 400,
-              errors: {
-                page: "Size must be greater than or equal to 1"}})
+            message: "Validation Error",
+            statusCode: 400,
+            errors: {
+                page: "Size must be greater than or equal to 1"
+            }
+        })
     }
-    if(maxLat > 90){
+    if (maxLat > 90) {
         res.status(400)
         return res.json({
-        message: "Validation Error",
-        statusCode: 400,
-              errors: {
-                page: "Maximum latitude is invalid"}})
+            message: "Validation Error",
+            statusCode: 400,
+            errors: {
+                page: "Maximum latitude is invalid"
+            }
+        })
     }
-    if(minLat < -90){
+    if (minLat < -90) {
         res.status(400)
         return res.json({
-        message: "Validation Error",
-        statusCode: 400,
-              errors: {
-                page: "Minimum latitude is invalid"}})
+            message: "Validation Error",
+            statusCode: 400,
+            errors: {
+                page: "Minimum latitude is invalid"
+            }
+        })
     }
-    if(minLng < -180){
+    if (minLng < -180) {
         res.status(400)
         return res.json({
-        message: "Validation Error",
-        statusCode: 400,
-              errors: {
-                page: "Minimum longitude is invalid"}})
+            message: "Validation Error",
+            statusCode: 400,
+            errors: {
+                page: "Minimum longitude is invalid"
+            }
+        })
     }
-    if(maxLng > 180){
+    if (maxLng > 180) {
         res.status(400)
         return res.json({
-        message: "Validation Error",
-        statusCode: 400,
-              errors: {
-                page: "Maximum longitude is invalid"}})
+            message: "Validation Error",
+            statusCode: 400,
+            errors: {
+                page: "Maximum longitude is invalid"
+            }
+        })
     }
-    if(maxPrice < 0){
+    if (maxPrice < 0) {
         res.status(400)
         return res.json({
-        message: "Validation Error",
-        statusCode: 400,
-              errors: {
-                page: "Maximum price must be greater than or equal to 0"}})
+            message: "Validation Error",
+            statusCode: 400,
+            errors: {
+                page: "Maximum price must be greater than or equal to 0"
+            }
+        })
     }
 
-      if (!page || isNaN(page) || page > 10) {page = 1}
-      if (!size || isNaN(size)|| size > 20) {size = 20}  
-      if (!minLat){minLat = -90}
-      if (!maxLat){maxLat = 90}
-      if (!minLng){minLng = -180}
-      if (!maxLng){maxLng = 180}
-      if (!minPrice){minPrice = 1}
-      if (!maxPrice){maxPrice = 100000}
-      
+    if (!page || isNaN(page) || page > 10) { page = 1 }
+    if (!size || isNaN(size) || size > 20) { size = 20 }
+    if (!minLat) { minLat = -90 }
+    if (!maxLat) { maxLat = 90 }
+    if (!minLng) { minLng = -180 }
+    if (!maxLng) { maxLng = 180 }
+    if (!minPrice) { minPrice = 1 }
+    if (!maxPrice) { maxPrice = 100000 }
+
     const searchedSpots = await Spot.findAll({
-        where:{
-            lat: {[Op.between]: [minLat, maxLat]},
-            lng: {[Op.between]: [minLng, maxLng]},
-            price: {[Op.between]: [minPrice, maxPrice]},
+        where: {
+            lat: { [Op.between]: [minLat, maxLat] },
+            lng: { [Op.between]: [minLng, maxLng] },
+            price: { [Op.between]: [minPrice, maxPrice] },
         },
-        attributes:{
-            include:[
+        attributes: {
+            include: [
                 [sequelize.literal(
                     `(SELECT imageURL
                     FROM SpotImages
@@ -138,36 +156,41 @@ router.get('/search', async (req, res, next)=> {
             ]
         },
         limit: size,
-        offset: (page - 1)* size
+        offset: (page - 1) * size
     })
     searchedSpots.page = page
     searchedSpots.size = size
-    res.status(200).json({searchedSpots, page, size})
+    res.status(200).json({ searchedSpots, page, size })
 })
 
 router.post('/:spotId/spotImages', requireAuth, async (req, res, next) => {
-    
+
     const spotLocator = await Spot.findByPk(req.params.spotId)
 
-    if(!spotLocator){
+    if (!spotLocator) {
         res.status(404)
         res.json({
             message: "Spot couldn't be found",
             statusCode: 404
         })
-    }else{
-        if(spotLocator.ownerId === req.user.id){
-        const { url, preview } = req.body
-    
-        const freshPic = await SpotImage.create({
-            spotId: req.params.spotId,
-            imageURL: url,
-            previewImage: preview
-        })
-    
-        res.json(freshPic)}
-        if(spotLocator.ownerId !== req.user.id){
-            res.status(401).json({message:"Unauthorized action. Only the spot owner can add new image", status: 401})
+    } else {
+        if (spotLocator.ownerId === req.user.id) {
+            const { url, preview } = req.body
+
+            const freshPic = await SpotImage.create({
+                spotId: req.params.spotId,
+                imageURL: url,
+                previewImage: preview
+            })
+
+            res.json({
+                id: freshPic.id,
+                imageURL: freshPic.imageURL,
+                previewImage: freshPic.previewImage
+            })
+        }
+        if (spotLocator.ownerId !== req.user.id) {
+            res.status(401).json({ message: "Unauthorized action. Only the spot owner can add new image", status: 401 })
         }
     }
 
@@ -194,18 +217,28 @@ router.post('/', validateSpotInfo, requireAuth, async (req, res, next) => {
 
 router.delete("/:spotId", requireAuth, async (req, res, next) => {
     const toBeDeleted = await Spot.findByPk(req.params.spotId)
-    if (toBeDeleted === null) {
-        res.status(404)
+
+
+    if (toBeDeleted.ownerId === req.user.id) {
+        if (toBeDeleted === null) {
+            res.status(404)
+            res.json({
+                message: "Spot couldn't be found",
+                statusCode: 404
+            })
+        }
+        if (toBeDeleted) {
+            await toBeDeleted.destroy()
+            res.json({
+                message: "Successfully deleted",
+                statusCode: 200
+            })
+        }
+    } else {
+        res.status(401)
         res.json({
-            message: "Spot couldn't be found",
-            statusCode: 404
-        })
-    }
-    if (toBeDeleted) {
-        await toBeDeleted.destroy()
-        res.json({
-            message: "Successfully deleted",
-            statusCode: 200
+            message: "Operation failed. The current user must be the owner of the spot",
+            statusCode: 401
         })
     }
 }
@@ -255,10 +288,19 @@ router.get('/:spotId', async (req, res, next) => {
                 FROM Reviews WHERE spotId = Spot.id)`), "numOfReviews"],
                 [sequelize.literal(`(SELECT AVG(stars)
                 FROM Reviews WHERE spotId = Spot.id)`), "avgStarRatings"],
-            ]
+            ],
         },
-        include: [{ model: SpotImage }, { model: User, as: "Owner" }]
+        include: [{ model: SpotImage, attributes: { exclude: ["spotId"] } }, { model: User, attributes:["id", "firstName", "lastName"], as: "Owner" }]
     })
+
+    if(!foundSpot){
+        res.status(404),
+        res.json({
+            message: "Spot is not found",
+            status: 404
+        })
+    }
+
     res.json(foundSpot)
 })
 
