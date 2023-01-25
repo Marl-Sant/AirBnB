@@ -1,13 +1,74 @@
 const express = require('express');
-const { Review, ReviewImage } = require('../../db/models');
+const { User, Review, ReviewImage, Spot } = require('../../db/models');
 const sequelize = require("sequelize")
 const { check } = require('express-validator');
 const { requireAuth } = require('../../utils/auth')
 const { handleValidationErrors } = require('../../utils/validation');
-const { Op } = require("sequelize")
+const { Op } = require("sequelize");
+const { ResultWithContext } = require('express-validator/src/chain');
 const router = express.Router();
 
-const validateReviewInfo = []
+
+const validateReviewInfo = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage('Review must contain text'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isInt({ min: 1, max: 5 })
+        .toFloat()
+        .withMessage('Must be a number between 1 to 5'),
+    handleValidationErrors
+]
+
+router.get('/session', validateReviewInfo, requireAuth, async(req, res, next) => {
+    const getAllUserReviews = await Review.findAll({
+        where:{
+            userId: req.user.id
+        },
+        include:[{
+            model:User,
+            attributes:['id', 'firstName', 'lastName']
+        }, {
+            model:Spot,
+            attributes:{
+                include: [[sequelize.literal(`(SELECT imageURL FROM SpotImages WHERE spotId = Spot.id AND previewImage = true)`), "previewImage"]],
+                exclude: ['createdAt', 'updatedAt']
+            }
+        },{
+            model:ReviewImage,
+            attributes: ['id', 'imageURL']
+        }]
+    })
+
+    res.json({getAllUserReviews})
+})
+
+router.put('/:reviewId', requireAuth, async (req, res, next)=> {
+    
+    const reviewToBeEdited = await Review.findByPk(req.params.reviewId)
+
+    if(!reviewToBeEdited){
+        res.status(404)
+        res.json({message: 'Review was not found'})
+    }
+
+    if(reviewToBeEdited.userId !== req.user.id){
+    res.status(403)
+    res.json({message: 'Operation failed. Current user must be the owner of review'})
+        }else{
+            const {review, stars} = req.body
+
+            reviewToBeEdited.review = review
+            reviewToBeEdited.stars = stars
+
+            reviewToBeEdited.save()
+
+            res.json(reviewToBeEdited)
+        }
+})
+
 
 router.post("/:reviewId/reviewImages", requireAuth,  async (req, res, next)=> {
 
@@ -21,7 +82,6 @@ router.post("/:reviewId/reviewImages", requireAuth,  async (req, res, next)=> {
         })
     }
 
-    //NOT STOPPING IMAGE FROM BEING INSERTED INTO DB
     if(review.userId !== req.user.id){
         res.status(401)
         res.json({
@@ -29,19 +89,25 @@ router.post("/:reviewId/reviewImages", requireAuth,  async (req, res, next)=> {
             statusCode: 401
         })
     }
-
+    
     const picList = await ReviewImage.findAll({where:{reviewId:req.params.reviewId}})
+    console.log(picList)
     if(picList.length > 10){
-        res.status(403)
-        res.json({message:"Maximum number of images for this resouce was reached", statusCode: 403})
-    }
+        res.status(400)
+        res.json({message:"Maximum number of images for this resouce was reached", statusCode: 400})
+    }else if(review.userId === req.user.id){
     const {url} = req.body
     const newReviewImage = await ReviewImage.create({
         reviewId: Number(req.params.reviewId),
-        imageURL: url
+        imageURL: url,
     })
+    res.json({
+        id: newReviewImage.id,
+        imageURL: newReviewImage.imageURL})
+}
 
-    res.json(newReviewImage)
+
+
 })
 
 
