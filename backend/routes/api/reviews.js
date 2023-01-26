@@ -22,6 +22,24 @@ const validateReviewInfo = [
     handleValidationErrors
 ]
 
+router.delete('/:reviewId', requireAuth, async (req, res, next)=> {
+    const tobeDeleted = await Review.findByPk(req.params.reviewId)
+
+    if(!tobeDeleted){
+        res.status(404)
+        res.json({message: "Review couldn't be found", statusCode: 404})
+    }
+
+    if(tobeDeleted.userId !== req.user.id){
+        res.status(401)
+        res.json({message:'Operation failed. Must be the owner of the review to deleted.', statusCode: 401})
+    }else{
+        await tobeDeleted.destroy()
+        res.json({message:"Successfully deleted", statusCode: 200})
+    }
+})
+
+
 router.get('/session', validateReviewInfo, requireAuth, async(req, res, next) => {
     const getAllUserReviews = await Review.findAll({
         where:{
@@ -45,13 +63,13 @@ router.get('/session', validateReviewInfo, requireAuth, async(req, res, next) =>
     res.json({getAllUserReviews})
 })
 
-router.put('/:reviewId', requireAuth, async (req, res, next)=> {
+router.put('/:reviewId', validateReviewInfo, requireAuth, async (req, res, next)=> {
     
     const reviewToBeEdited = await Review.findByPk(req.params.reviewId)
 
     if(!reviewToBeEdited){
         res.status(404)
-        res.json({message: 'Review was not found'})
+        res.json({message: 'Review was not found', statusCode:404})
     }
 
     if(reviewToBeEdited.userId !== req.user.id){

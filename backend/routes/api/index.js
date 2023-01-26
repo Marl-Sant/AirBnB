@@ -4,6 +4,7 @@ const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
 const spotRouter = require('./spots.js')
 const reviewRouter = require('./reviews.js')
+
 const { restoreUser } = require("../../utils/auth.js");
 
 // Connect restoreUser middleware to the API router
