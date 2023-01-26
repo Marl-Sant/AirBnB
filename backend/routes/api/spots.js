@@ -178,7 +178,7 @@ router.get('/search', async (req, res, next) => {
 
 
 //ADD IMAGE TO SPOT BASED ON SPOT ID
-router.post('/:spotId/spotImages', requireAuth, async (req, res, next) => {
+router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
     const spotLocator = await Spot.findByPk(req.params.spotId)
 
@@ -221,10 +221,9 @@ router.post('/:spotId/reviews', validateReviewInfo, requireAuth, async (req, res
         })
     }
     const findReviews = await Review.findAll({ where: { [Op.and]: [{ userId: req.user.id }, { spotId: req.params.spotId }] } })
-    console.log(findReviews)
-    if (findReviews) {
+    if (findReviews.length) {
         res.status(403),
-            res.json({ message: "User already has a review for this spot", statusCode: 403 })
+        res.json({ message: "User already has a review for this spot", statusCode: 403 })
     } else {
         const { review, stars } = req.body
 
@@ -291,7 +290,7 @@ router.delete("/:spotId", requireAuth, async (req, res, next) => {
 
 
 //returning all the spots owned by current user
-router.get('/session', requireAuth, async (req, res, next) => {
+router.get('/current', requireAuth, async (req, res, next) => {
     const mySpots = await Spot.findAll({
         where: { ownerId: req.user.id },
         attributes: {

@@ -40,7 +40,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next)=> {
 })
 
 
-router.get('/session', validateReviewInfo, requireAuth, async(req, res, next) => {
+router.get('/current', requireAuth, async(req, res, next) => {
     const getAllUserReviews = await Review.findAll({
         where:{
             userId: req.user.id
@@ -52,7 +52,7 @@ router.get('/session', validateReviewInfo, requireAuth, async(req, res, next) =>
             model:Spot,
             attributes:{
                 include: [[sequelize.literal(`(SELECT imageURL FROM SpotImages WHERE spotId = Spot.id AND previewImage = true)`), "previewImage"]],
-                exclude: ['createdAt', 'updatedAt']
+                exclude: ['description', 'createdAt', 'updatedAt']
             }
         },{
             model:ReviewImage,
@@ -88,7 +88,7 @@ router.put('/:reviewId', validateReviewInfo, requireAuth, async (req, res, next)
 })
 
 
-router.post("/:reviewId/reviewImages", requireAuth,  async (req, res, next)=> {
+router.post("/:reviewId/images", requireAuth,  async (req, res, next)=> {
 
     const review = await Review.findByPk(req.params.reviewId)
 
@@ -109,19 +109,21 @@ router.post("/:reviewId/reviewImages", requireAuth,  async (req, res, next)=> {
     }
     
     const picList = await ReviewImage.findAll({where:{reviewId:req.params.reviewId}})
-    console.log(picList)
-    if(picList.length > 10){
+    if(review.userId === req.user.id){
+        if(picList.length < 10){
+        const {url} = req.body
+        const newReviewImage = await ReviewImage.create({
+            reviewId: Number(req.params.reviewId),
+            imageURL: url,
+        })
+        res.json({
+            id: newReviewImage.id,
+            imageURL: newReviewImage.imageURL})
+    }else{
         res.status(400)
-        res.json({message:"Maximum number of images for this resouce was reached", statusCode: 400})
-    }else if(review.userId === req.user.id){
-    const {url} = req.body
-    const newReviewImage = await ReviewImage.create({
-        reviewId: Number(req.params.reviewId),
-        imageURL: url,
-    })
-    res.json({
-        id: newReviewImage.id,
-        imageURL: newReviewImage.imageURL})
+        res.json({message: "Maximum number of images for this resource was reached",
+        statusCode: 400})
+    }
 }
 
 
