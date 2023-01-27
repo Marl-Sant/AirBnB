@@ -1,5 +1,5 @@
 const express = require('express');
-const { Spot, SpotImage, User, Review, ReviewImage } = require('../../db/models');
+const { Spot, SpotImage, User, Review, ReviewImage, Booking } = require('../../db/models');
 const sequelize = require("sequelize")
 const { check } = require('express-validator');
 const { requireAuth } = require('../../utils/auth')
@@ -65,6 +65,65 @@ const validateReviewInfo = [
         .withMessage('Must be a number between 1 to 5'),
     handleValidationErrors
 ]
+
+// const validateBookingInfo = [
+//     check('startDate')
+//         .exists({ checkFalsy: true })
+//         .notEmpty()
+//         .toDate(),
+//     check('endDate')
+//         .exists({ checkFalsy: true })
+//         .notEmpty()
+//         .toDate(),
+//     handleValidationErrors
+// ]
+
+
+router.post('/:spotId/bookings', requireAuth, async (req, res, next)=> {
+    let {startDate, endDate} = req.body
+    startDate = new Date (startDate)
+    endDate = new Date (endDate)
+    const bookedSpot = await Spot.findByPk(req.params.spotId)
+    const allBookings = await Booking.findAll({where:{endDate: {[Op.gt]: startDate}}})
+    for(let availibilty of allBookings){
+        if(endDate > availibilty.startDate || startDate < availibilty.endDate){
+            res.status(403)
+            res.json({
+                message: "Sorry, this spot is already booked for the specified dates",
+                statusCode: 403,
+                errors: [
+                  "Start date conflicts with an existing booking",
+                  "End date conflicts with an existing booking"
+                ]
+              })
+        }
+    }
+
+    if(bookedSpot.ownerId !== req.user.id){
+        if(endDate.getTime() > startDate.getTime()){
+        const newBooking = await Booking.create({
+            spotId: Number(req.params.spotId),
+            userId: req.user.id,
+            startDate: startDate,
+            endDate: endDate
+        })
+        res.json(newBooking)}else{
+            res.status(400).json({
+                message: "Validation error",
+                statusCode: 400,
+                errors: [
+                  "endDate cannot be on or before startDate"
+                ]
+              })
+        }
+    }else{
+        res.status(403)
+        res.json({message:'Operation failed. Owner cannot make reservation to their own spot.'})
+    }
+})
+
+
+
 
 
 //SEARCH THROUGH SPOTS
