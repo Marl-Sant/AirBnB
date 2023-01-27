@@ -40,7 +40,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next)=> {
 })
 
 
-router.get('/current', requireAuth, async(req, res, next) => {
+router.get('/session', requireAuth, async(req, res, next) => {
     const getAllUserReviews = await Review.findAll({
         where:{
             userId: req.user.id
