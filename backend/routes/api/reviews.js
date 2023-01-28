@@ -41,7 +41,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next)=> {
 
 
 router.get('/current', requireAuth, async(req, res, next) => {
-    const getAllUserReviews = await Review.findAll({
+    const Reviews = await Review.findAll({
         where:{
             userId: req.user.id
         },
@@ -51,7 +51,8 @@ router.get('/current', requireAuth, async(req, res, next) => {
         }, {
             model:Spot,
             attributes:{
-                include: [[sequelize.literal(`(SELECT imageURL FROM SpotImages WHERE spotId = Spot.id AND previewImage = true)`), "previewImage"]],
+                include: [[sequelize.literal(`(SELECT imageURL FROM SpotImages WHERE 
+                    spotId = Spot.id AND previewImage = true)`), "previewImage"]],
                 exclude: ['description', 'createdAt', 'updatedAt']
             }
         },{
@@ -60,7 +61,7 @@ router.get('/current', requireAuth, async(req, res, next) => {
         }]
     })
 
-    res.json({getAllUserReviews})
+    res.json({Reviews})
 })
 
 router.put('/:reviewId', validateReviewInfo, requireAuth, async (req, res, next)=> {

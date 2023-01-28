@@ -79,46 +79,89 @@ const validateReviewInfo = [
 // ]
 
 
-router.post('/:spotId/bookings', requireAuth, async (req, res, next)=> {
-    let {startDate, endDate} = req.body
-    startDate = new Date (startDate)
-    endDate = new Date (endDate)
+router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
+    const doIExist = await Spot.findByPk(req.params.spotId)
+    if(!doIExist){
+        res.status(404)
+        return res.json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+          })
+    }
+    
+    const doIOwnThisSpot = await Spot.findOne({
+        where: {
+            [Op.and]:
+                [{ ownerId: req.user.id }, { id: req.params.spotId }]
+        }
+    })
+    console.log(doIOwnThisSpot)
+    let payload
+    if (doIOwnThisSpot) {
+        payload = await Booking.findAll({
+            where: { spotId: req.params.spotId },
+            include: { model: User, attributes: ["id", "firstName", "lastName"] }
+        })
+    } else {
+        payload = await Booking.findAll({
+            where: { spotId: req.params.spotId },
+            attributes: ["spotId", "startDate", "endDate"]
+        })
+    }
+    res.json({ Bookings: payload })
+})
+
+
+router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
+    const { startDate, endDate } = req.body
+    const testStartDate = new Date(startDate)
+    const testEndDate = new Date(endDate)
     const bookedSpot = await Spot.findByPk(req.params.spotId)
-    const allBookings = await Booking.findAll({where:{endDate: {[Op.gt]: startDate}}})
-    for(let availibilty of allBookings){
-        if(endDate > availibilty.startDate || startDate < availibilty.endDate){
+
+    if (!bookedSpot) {
+        res.status(404)
+        return res.json({
+            message: "Spot couldn't be found",
+            statusCode: 404
+        })
+    }
+
+    const allBookings = await Booking.findAll({ where: { endDate: { [Op.gt]: startDate } } })
+    for (let availibilty of allBookings) {
+        if (testEndDate >= availibilty.startDate || testStartDate <= availibilty.endDate) {
             res.status(403)
-            res.json({
+            return res.json({
                 message: "Sorry, this spot is already booked for the specified dates",
                 statusCode: 403,
                 errors: [
-                  "Start date conflicts with an existing booking",
-                  "End date conflicts with an existing booking"
+                    "Start date conflicts with an existing booking",
+                    "End date conflicts with an existing booking"
                 ]
-              })
+            })
         }
     }
 
-    if(bookedSpot.ownerId !== req.user.id){
-        if(endDate.getTime() > startDate.getTime()){
-        const newBooking = await Booking.create({
-            spotId: Number(req.params.spotId),
-            userId: req.user.id,
-            startDate: startDate,
-            endDate: endDate
-        })
-        res.json(newBooking)}else{
+    if (bookedSpot.ownerId !== req.user.id) {
+        if (testEndDate.getTime() > testStartDate.getTime()) {
+            const newBooking = await Booking.create({
+                spotId: req.params.spotId,
+                userId: req.user.id,
+                startDate: startDate,
+                endDate: endDate
+            })
+            res.json(newBooking)
+        } else {
             res.status(400).json({
                 message: "Validation error",
                 statusCode: 400,
                 errors: [
-                  "endDate cannot be on or before startDate"
+                    "endDate cannot be on or before startDate"
                 ]
-              })
+            })
         }
-    }else{
+    } else {
         res.status(403)
-        res.json({message:'Operation failed. Owner cannot make reservation to their own spot.'})
+        return res.json({ message: 'Operation failed. Owner cannot make reservation to their own spot.' })
     }
 })
 
@@ -282,7 +325,7 @@ router.post('/:spotId/reviews', validateReviewInfo, requireAuth, async (req, res
     const findReviews = await Review.findAll({ where: { [Op.and]: [{ userId: req.user.id }, { spotId: req.params.spotId }] } })
     if (findReviews.length) {
         res.status(403),
-        res.json({ message: "User already has a review for this spot", statusCode: 403 })
+            res.json({ message: "User already has a review for this spot", statusCode: 403 })
     } else {
         const { review, stars } = req.body
 
@@ -389,7 +432,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
         res.json({
             message: "Spot couldn't be found",
             statusCode: 404
-          })
+        })
     } else {
         const allReviews = await Review.findAll({
             where: { spotId: req.params.spotId },
@@ -478,21 +521,44 @@ router.put('/:spotId', validateSpotInfo, requireAuth, async (req, res, next) => 
 
 //get all spots with ratings and preview image
 router.get('/', async (req, res, next) => {
+    // const allSpots = await Spot.findAll({
+    //     attributes: {
+    //         include: [
+    //             [sequelize.literal(
+    //                 `(SELECT AVG(stars) 
+    //                 FROM Reviews
+    //                 WHERE spotId = Spot.id)`
+    //             ), "avgRating"],
+    //             [sequelize.literal(
+    //                 `(SELECT imageURL
+    //                 FROM SpotImages
+    //                 WHERE spotId = Spot.id AND previewImage = true)`
+    //             ), "previewImage"]
+    //         ]
+    //     }
+    // })
+    // res.json(allSpots)
+
+    const env = process.env.NODE_ENV
+    const schema = process.env.SCHEMA
+    const tableReview = env ===  "production" ? schema + '."Reviews"' : "Reviews"
+    const tableImage = env ===  "production" ? schema + '."SpotImages"' : "SpotImages"
+    console.log("!!!!!!!!!!!!!!!!!", tableReview,"@@@@@@@@@@@@@@@@@@@@@@@@@@", tableImage)
     const allSpots = await Spot.findAll({
         attributes: {
             include: [
                 [sequelize.literal(
                     `(SELECT AVG(stars) 
-                    FROM Reviews
-                    WHERE spotId = Spot.id)`
-                ), "avgRating"],
+                    FROM ${tableReview}
+                    WHERE "spotId" = "Spot".id)`
+                ), "star"],
                 [sequelize.literal(
-                    `(SELECT imageURL
-                    FROM SpotImages
-                    WHERE spotId = Spot.id AND previewImage = true)`
+                    `(SELECT "imageURL"
+                    FROM ${tableImage}
+                    WHERE "spotId" = "Spot".id AND "previewImage" = true)`
                 ), "previewImage"]
             ]
-        }
+        },
     })
     res.json(allSpots)
 })
