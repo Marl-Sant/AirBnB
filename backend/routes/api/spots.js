@@ -573,7 +573,6 @@ router.get('/', async (req, res, next) => {
     
     searchedSpots.forEach(spot => {
         spot.SpotImages.forEach(image => {
-            console.log(image.imageURL, image.id, "LEFT TERMINAL LOGIC")
             // spot.dataValues.previewImage = "No preview image"
             if (image.dataValues.previewImage) {
                 spot.dataValues.previewImage = image.imageURL
