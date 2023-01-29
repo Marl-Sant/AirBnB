@@ -125,7 +125,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
         }
     }
 
-    res.json(allBookings)
+    res.json({Bookings: allBookings})
 })
 
 
