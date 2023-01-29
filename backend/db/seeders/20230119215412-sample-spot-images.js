@@ -27,7 +27,7 @@ module.exports = {
     },
     {
       spotId: 2,
-      imageURL: "NONPREVIEW IMAGE URL 1",
+      imageURL: "NONPREVIEW IMAGE URL 2",
       previewImage: false
     },
     {
@@ -37,17 +37,17 @@ module.exports = {
     }, 
     {
       spotId: 3,
-      imageURL: "NONPREVIEW IMAGE URL 1",
+      imageURL: "NONPREVIEW IMAGE URL 3",
       previewImage: false
     }, 
     {
       spotId: 4,
-      imageURL: "PREVIEW IMAGE URL 3",
-      previewImage: true
+      imageURL: "PREVIEW IMAGE URL 4",
+      previewImage: false
     }, 
     {
       spotId: 4,
-      imageURL: "NONPREVIEW IMAGE URL 1",
+      imageURL: "NONPREVIEW IMAGE URL 4",
       previewImage: false
     }
    ], {});

@@ -21,19 +21,19 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
             statusCode: 404
         })
     }
-    const allBookings = await Booking.findAll({ where: { endDate: { [Op.gt]: startDate } } })
-    for (let availibilty of allBookings) {
-        if (testEndDate >= availibilty.startDate || testStartDate <= availibilty.endDate) {
-            res.status(403)
+    const spotIdForBookedSpot = doIExist.dataValues.id
+    
+    const allBookingsForSpot = await Booking.findAll({where:{spotId: spotIdForBookedSpot}})
+
+    for(let booking of allBookingsForSpot){
+        let approvedEndDate = new Date(booking.dataValues.endDate)
+        let approvedStartDate = new Date(booking.dataValues.startDate)
+        if (approvedEndDate >= testStartDate && approvedStartDate <= testEndDate){
             return res.json({
-                message: "Sorry, this spot is already booked for the specified dates",
-                statusCode: 403,
-                errors: [
-                    "Start date conflicts with an existing booking",
-                    "End date conflicts with an existing booking"
-                ]
+                message: "Booking conflict"
             })
         }
+        
     }
 
     const editThisBooking = await Booking.findOne({
@@ -68,12 +68,19 @@ router.get('/current', requireAuth, async (req, res, next) => {
         include: {
             model: Spot,
             attributes: {
-                include: [[sequelize.literal(`(SELECT imageURL FROM spotImages WHERE 
-                    spotId = Spot.id AND previewImage = true)`), "previewImage"]],
                 exclude: ['createdAt', 'updatedAt']
             }
         }
     })
+
+    for(let booking of allBookings){
+        const previewPic = await SpotImage.findOne({where:{spotId: booking.Spot.id, previewImage: true}})
+        if (previewPic){
+            booking.Spot.dataValues.previewImage = previewPic.imageURL
+        }else{
+            booking.Spot.dataValues.previewImage = "No Preview Image"
+        }
+    }
 
     res.json(allBookings)
 })

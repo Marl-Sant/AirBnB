@@ -1,5 +1,5 @@
 const express = require('express');
-const { User, Review, ReviewImage, Spot } = require('../../db/models');
+const { User, Review, ReviewImage, Spot, SpotImage } = require('../../db/models');
 const sequelize = require("sequelize")
 const { check } = require('express-validator');
 const { requireAuth } = require('../../utils/auth')
@@ -41,7 +41,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next)=> {
 
 
 router.get('/current', requireAuth, async(req, res, next) => {
-    const Reviews = await Review.findAll({
+    const reviews = await Review.findAll({
         where:{
             userId: req.user.id
         },
@@ -51,8 +51,6 @@ router.get('/current', requireAuth, async(req, res, next) => {
         }, {
             model:Spot,
             attributes:{
-                include: [[sequelize.literal(`(SELECT imageURL FROM SpotImages WHERE 
-                    spotId = Spot.id AND previewImage = true)`), "previewImage"]],
                 exclude: ['description', 'createdAt', 'updatedAt']
             }
         },{
@@ -61,7 +59,18 @@ router.get('/current', requireAuth, async(req, res, next) => {
         }]
     })
 
-    res.json({Reviews})
+        
+    for(let review of reviews){
+        const previewPic = await SpotImage.findOne({where:{spotId: review.Spot.id, previewImage: true}})
+        if (previewPic){
+            review.Spot.dataValues.previewImage = previewPic.imageURL
+        }else{
+            review.Spot.dataValues.previewImage = "No Preview Image"
+        }
+    }
+
+
+    res.json({Reviews:reviews})
 })
 
 router.put('/:reviewId', validateReviewInfo, requireAuth, async (req, res, next)=> {
