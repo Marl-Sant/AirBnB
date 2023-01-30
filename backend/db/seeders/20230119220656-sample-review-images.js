@@ -12,31 +12,31 @@ module.exports = {
     options.tableName = 'ReviewImages';
     await queryInterface.bulkInsert(options, [{
       reviewId: 1,
-      imageURL: "FIRST PIC URL"
+      url: "FIRST PIC URL"
     },
     {
       reviewId: 1,
-      imageURL: "SECOND PIC URL"
+      url: "SECOND PIC URL"
     },
     {
       reviewId: 1,
-      imageURL: "THIRD PIC URL"
+      url: "THIRD PIC URL"
     },
     {
       reviewId: 2,
-      imageURL: "FIRST PIC URL"
+      url: "FIRST PIC URL"
     },
     {
       reviewId: 2,
-      imageURL: "SECOND PIC URL"
+      url: "SECOND PIC URL"
     },
     {
       reviewId: 2,
-      imageURL: "THIRD PIC URL"
+      url: "THIRD PIC URL"
     },
     {
       reviewId: 3,
-      imageURL: "FIRST PIC URL"
+      url: "FIRST PIC URL"
     }
    ], {});
   },
@@ -45,7 +45,7 @@ module.exports = {
     options.tableName = 'ReviewImages';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      imageURL: { [Op.in]: ["https://imgur.com/a/PEQkQCf"] }
+      url: { [Op.in]: ["https://imgur.com/a/PEQkQCf"] }
     }, {});
   }
 };

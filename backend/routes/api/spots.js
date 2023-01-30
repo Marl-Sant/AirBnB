@@ -193,13 +193,13 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
             
             const freshPic = await SpotImage.create({
                 spotId: req.params.spotId,
-                imageURL: url,
+                url: url,
                 previewImage: preview
             })
             
             res.json({
                 id: freshPic.id,
-                imageURL: freshPic.imageURL,
+                url: freshPic.url,
                 previewImage: freshPic.previewImage
             })
         }
@@ -305,7 +305,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     spotList.forEach(spot => {
         spot.SpotImages.forEach(image => {
             if (image.dataValues.previewImage) {
-                  spot.dataValues.previewImage = image.imageURL
+                  spot.dataValues.previewImage = image.url
                 }
                 delete spot.dataValues.SpotImages;
                 if(!spot.dataValues.previewImage){
@@ -321,7 +321,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 statusCode: 404
         })
     }
-    res.json(spotList)
+    res.json({Spots: spotList})
 })
 
 //GET ALL REVIEWS BY SPOT ID
@@ -344,7 +344,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
                 },
                 {
                     model: ReviewImage,
-                    attributes: ['id', 'imageURL']
+                    attributes: ['id', 'url']
                 }
             ]
         })
@@ -376,7 +376,9 @@ const spotList = await Spot.findOne({
             id: req.params.spotId
         },
         include:[
-            {model: SpotImage}
+            {model: Review},
+            {model: SpotImage},
+            {model: User, as: "Owner"}
         ]
         // offset: pagination.offset,
         // limit: pagination.limit
@@ -389,15 +391,9 @@ const spotList = await Spot.findOne({
             statusCode: 404
         })
     }
-    
-    spotList.SpotImages.forEach(image => {
-              if (image.dataValues.previewImage) {
-                  spotList.dataValues.previewImage = image.imageURL
-                } else {
-                    spotList.dataValues.previewImage = "No Preview Image"
-                }
-                delete spotList.dataValues.SpotImages;
-            })
+
+    spotList.dataValues.numReviews = spotList.Reviews.length;
+    delete spotList.dataValues.Reviews
             
     res.json(spotList)
 })
@@ -580,7 +576,7 @@ router.get('/', async (req, res, next) => {
         spot.SpotImages.forEach(image => {
             // spot.dataValues.previewImage = "No preview image"
             if (image.dataValues.previewImage) {
-                spot.dataValues.previewImage = image.imageURL
+                spot.dataValues.previewImage = image.url
             }
             delete spot.dataValues.SpotImages;
         })

@@ -55,7 +55,7 @@ router.get('/current', requireAuth, async(req, res, next) => {
             }
         },{
             model:ReviewImage,
-            attributes: ['id', 'imageURL']
+            attributes: ['id', 'url']
         }]
     })
 
@@ -63,7 +63,7 @@ router.get('/current', requireAuth, async(req, res, next) => {
     for(let review of reviews){
         const previewPic = await SpotImage.findOne({where:{spotId: review.Spot.id, previewImage: true}})
         if (previewPic){
-            review.Spot.dataValues.previewImage = previewPic.imageURL
+            review.Spot.dataValues.previewImage = previewPic.url
         }else{
             review.Spot.dataValues.previewImage = "No Preview Image"
         }
@@ -124,11 +124,11 @@ router.post("/:reviewId/images", requireAuth,  async (req, res, next)=> {
         const {url} = req.body
         const newReviewImage = await ReviewImage.create({
             reviewId: Number(req.params.reviewId),
-            imageURL: url,
+            url: url,
         })
         res.json({
             id: newReviewImage.id,
-            imageURL: newReviewImage.imageURL})
+            url: newReviewImage.url})
     }else{
         res.status(400)
         res.json({message: "Maximum number of images for this resource was reached",
