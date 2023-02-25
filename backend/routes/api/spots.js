@@ -95,7 +95,6 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
                 [{ ownerId: req.user.id }, { id: req.params.spotId }]
         }
     })
-    console.log(doIOwnThisSpot)
     let payload
     if (doIOwnThisSpot) {
         payload = await Booking.findAll({

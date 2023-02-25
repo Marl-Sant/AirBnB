@@ -20,7 +20,6 @@ router.delete('/:imageId', requireAuth, async(req, res, next)=> {
             statusCode: 404
           })
     }
-    console.log(toBeDeleted.Review.dataValues.ownerId, "@!@!@!@!@")
     if(toBeDeleted.Review.dataValues.userId !== req.user.id){
         res.status(401)
         return res.json(

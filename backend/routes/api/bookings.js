@@ -34,8 +34,6 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
           })
     }
 
-    console.log(toBeDeleted.dataValues)
-
     await toBeDeleted.destroy()
     res.json(
         {
@@ -85,7 +83,6 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {
     })
     const hasThisBookingPassed = new Date(editThisBooking.endDate)
     const today = new Date()
-    console.log(today, hasThisBookingPassed)
     if (hasThisBookingPassed.getTime() < today.getTime()) {
         res.status(403)
         return res.json(
