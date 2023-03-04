@@ -594,7 +594,8 @@ router.get('/', async (req, res, next) => {
         page = parseInt(page)
         size = parseInt(size)
         
-        res.json({Spots: searchedSpots, page, size})
+        // res.json({Spots: searchedSpots, page, size})
+        res.json(searchedSpots)
     })
     
 module.exports = router;
