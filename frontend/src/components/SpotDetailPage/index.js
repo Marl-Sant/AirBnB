@@ -9,7 +9,7 @@ function SpotDetailPage() {
     const dispatch = useDispatch()
     const [isLoaded, setIsLoaded] = useState(false)
     const { spotId } = useParams()
-    const spot = useSelector((state) => state.spots)
+    const spot = useSelector((state) => state.spots[spotId])
 
     useEffect(() => {
         dispatch(spotActions.getSpotDetail(spotId)).then(() => setIsLoaded(true))

@@ -38,7 +38,7 @@ export const addSpotThunk = (spot) => async dispatch => {
     if (response.ok){
         const newSpot = await response.json()
         console.log(newSpot)
-        dispatch(showSpotDetail(newSpot.id))
+        return dispatch(showSpotDetail(newSpot.id))
     }
 }
 
@@ -50,7 +50,12 @@ const spotReducer = (state = {}, action) => {
            Object.values(action.spots).forEach(spot => newState[spot.id] = spot)
            return {...state, ...newState}
         case SPOT_DETAIL:
-            newState = {...state, ...action.spot}
+            console.log(action)
+            newState = {...state}
+            newState[action.spot.id] = action.spot
+            if(newState[undefined]){
+            delete newState['undefined']
+            }
             return newState
         default:
         return state

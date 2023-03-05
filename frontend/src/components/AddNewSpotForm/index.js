@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { addSpotThunk } from '../../store/spots';
+import { addSpotThunk, getSpotDetail } from '../../store/spots';
 
 
 const CreateNewSpotForm = ({ hideForm }) => {
@@ -60,10 +60,13 @@ const CreateNewSpotForm = ({ hideForm }) => {
         };
 
 
-        let newSpot = payload;
+        let newSpot = await dispatch(addSpotThunk(payload))
+        console.log(newSpot, '~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~')
+        let spotId = newSpot.spot
+        console.log(spotId, '@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@')
         if (newSpot) {
-            dispatch(addSpotThunk(newSpot))
-            history.push(`api/spots/${newSpot.id}`);
+            history.push(`/spots/${spotId}`);
+            dispatch(getSpotDetail(spotId))
         }
     };
 
