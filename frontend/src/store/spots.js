@@ -30,16 +30,30 @@ export const getSpotDetail = (spotId) => async dispatch => {
 }
 
 export const addSpotThunk = (spot) => async dispatch => {
-    const response = await csrfFetch('/api/spots', {
+    
+    const { address,city, state,country, lat, lng, name,description, price, images} = spot
+
+     const response = await csrfFetch('/api/spots', {
         method: 'POST',
-        body: JSON.stringify(spot)
+        body: JSON.stringify({address, city, state,country, lat, lng, name,description, price})
     })
 
     if (response.ok){
         const newSpot = await response.json()
+        dispatch(showSpotDetail(newSpot))
+        return newSpot
         console.log(newSpot)
-        return dispatch(showSpotDetail(newSpot.id))
     }
+    // const response = await csrfFetch('/api/spots', {
+    //     method: 'POST',
+    //     body: JSON.stringify(spot)
+    // })
+
+    // if (response.ok){
+    //     const newSpot = await response.json()
+    //     console.log(newSpot)
+    //     return dispatch(showSpotDetail(newSpot.id))
+    // }
 }
 
 const spotReducer = (state = {}, action) => {
@@ -50,7 +64,6 @@ const spotReducer = (state = {}, action) => {
            Object.values(action.spots).forEach(spot => newState[spot.id] = spot)
            return {...state, ...newState}
         case SPOT_DETAIL:
-            console.log(action)
             newState = {...state}
             newState[action.spot.id] = action.spot
             if(newState[undefined]){

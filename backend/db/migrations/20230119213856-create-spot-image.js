@@ -26,11 +26,10 @@ module.exports = {
       },
       url: {
         type: Sequelize.STRING,
-        allowNull: false
       },
       previewImage: {
         type: Sequelize.BOOLEAN,
-        allowNull: false
+        defaultValue:false
       },
       createdAt: {
         allowNull: false,

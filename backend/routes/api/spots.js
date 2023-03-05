@@ -179,7 +179,6 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     
     const spotLocator = await Spot.findByPk(req.params.spotId)
-    
     if (!spotLocator) {
         res.status(404)
         res.json({
@@ -195,7 +194,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
                 url: url,
                 previewImage: preview
             })
-            
+            console.log(freshPic)
             res.json({
                 id: freshPic.id,
                 url: freshPic.url,

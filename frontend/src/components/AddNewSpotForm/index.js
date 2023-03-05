@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { addSpotThunk, getSpotDetail } from '../../store/spots';
-
+import { addImageThunk } from '../../store/spotImages';
 
 const CreateNewSpotForm = ({ hideForm }) => {
 
@@ -57,16 +57,23 @@ const CreateNewSpotForm = ({ hideForm }) => {
             name,
             description,
             price,
+            //J'S CODE
+            images: [firstImage, secondImage, thirdImage, fourthImage, fifthImage]
         };
 
-
+        const imagePayload = {
+            firstImage, 
+            secondImage, 
+            thirdImage, 
+            fourthImage, 
+            fifthImage}
+        
         let newSpot = await dispatch(addSpotThunk(payload))
-        console.log(newSpot, '~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~')
-        let spotId = newSpot.spot
-        console.log(spotId, '@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@!@')
         if (newSpot) {
+            let spotId = newSpot.id
             history.push(`/spots/${spotId}`);
             dispatch(getSpotDetail(spotId))
+            dispatch(addImageThunk(newSpot, imagePayload))
         }
     };
 
