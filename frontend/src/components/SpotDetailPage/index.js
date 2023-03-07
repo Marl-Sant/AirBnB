@@ -20,7 +20,9 @@ function SpotDetailPage() {
         <>
             <div>
                 {isLoaded && (<div>
-                    {spot.city}
+                    <h1>{spot.name}</h1>
+                    <h2>{spot.city},{spot.state},{spot.country}</h2>
+                    <h1>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h1>
                 </div>
                 )
                 }

@@ -19,7 +19,11 @@ function LandingPage() {
     return (
         <>
         {isLoaded && 
-        spots.map((spot) => (<NavLink to={`/spots/${spot.id}`}><div key={spot.id}>{spot.city}</div></NavLink>))}
+        spots.map((spot) => (<NavLink to={`/spots/${spot.id}`}><div key={spot.id}>
+            <p>{spot.city},{spot.state}</p>
+            <p>{spot.price}</p>
+            <p>{spot.avgStarRating} STARS</p>
+            </div></NavLink>))}
         </>
     )
 }

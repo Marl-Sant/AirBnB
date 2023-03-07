@@ -178,6 +178,8 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
 //ADD IMAGE TO SPOT BASED ON SPOT ID
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     
+    console.log("MAKE SURE TO ADD A TAG TO IT OR YOU WONT FIND IT IN THE LOG")
+
     const spotLocator = await Spot.findByPk(req.params.spotId)
     if (!spotLocator) {
         res.status(404)
@@ -188,6 +190,8 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     } else {
         if (spotLocator.ownerId === req.user.id) {
             const { url, preview } = req.body
+
+            console.log(url, "MAKE SURE TO ADD A TAG TO IT OR YOU WONT FIND IT IN THE LOG")
             
             const freshPic = await SpotImage.create({
                 spotId: req.params.spotId,

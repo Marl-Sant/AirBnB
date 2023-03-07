@@ -1,27 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { addSpotThunk, getSpotDetail } from '../../store/spots';
-import { addImageThunk } from '../../store/spotImages';
 
-const CreateNewSpotForm = ({ hideForm }) => {
+const EditSpotForm = ({ hideForm }) => {
 
     const dispatch = useDispatch();
     const history = useHistory();
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [country, setCountry] = useState('');
-    const [lat, setLat] = useState('');
-    const [lng, setLng] = useState('');
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [price, setPrice] = useState(0)
-    const [firstImage, setFirstImage] = useState('')
-    const [secondImage, setSecondImage] = useState('')
-    const [thirdImage, setThirdImage] = useState('')
-    const [fourthImage, setFouthImage] = useState('')
-    const [fifthImage, setFifthImage] = useState('')
+
+    const {spotId} = useParams()
+    const editSpot = useSelector((state)=> state.spots[spotId])
+
+    const [address, setAddress] = useState(editSpot.address);
+    const [city, setCity] = useState(editSpot.city);
+    const [state, setState] = useState(editSpot.state);
+    const [country, setCountry] = useState(editSpot.country);
+    const [lat, setLat] = useState(editSpot.lat);
+    const [lng, setLng] = useState(editSpot.lng);
+    const [name, setName] = useState(editSpot.name);
+    const [description, setDescription] = useState(editSpot.description);
+    const [price, setPrice] = useState(editSpot.price)
 
     const updateLat = (e) => setLat(e.target.value);
     const updateLng = (e) => setLng(e.target.value);
@@ -32,13 +30,6 @@ const CreateNewSpotForm = ({ hideForm }) => {
     const updateName = (e) => setName(e.target.value);
     const updateDescription = (e) => setDescription(e.target.value);
     const updatePrice = (e) => setPrice(e.target.value);
-    const updateFirstImage = (e) => setFirstImage(e.target.value)
-    const updateSecondImage = (e) => setSecondImage(e.target.value)
-    const updateThirdImage = (e) => setThirdImage(e.target.value)
-    const updateFourthImage = (e) => setFouthImage(e.target.value)
-    const updateFifthImage = (e) => setFifthImage(e.target.value)
-
-
 
     useEffect(() => {
 
@@ -48,6 +39,7 @@ const CreateNewSpotForm = ({ hideForm }) => {
         e.preventDefault();
 
         const payload = {
+            ...editSpot,
             address,
             city,
             state,
@@ -58,11 +50,9 @@ const CreateNewSpotForm = ({ hideForm }) => {
             description,
             price,
             //J'S CODE
-            images: [firstImage, secondImage, thirdImage, fourthImage, fifthImage]
+            // images: [firstImage, secondImage, thirdImage, fourthImage, fifthImage]
         };
         
-        console.log(firstImage)
-
         let newSpot = await dispatch(addSpotThunk(payload))
         if (newSpot) {
             let spotId = newSpot.id
@@ -127,37 +117,11 @@ const CreateNewSpotForm = ({ hideForm }) => {
                     placeholder="Price"
                     value={price}
                     onChange={updatePrice} />
-                Photos<input
-                    type="text"
-                    placeholder="Preview Image URL"
-                    required
-                    value={firstImage}
-                    onChange={updateFirstImage} />
-                <input
-                    type="text"
-                    placeholder="Second Image URL"
-                    value={secondImage}
-                    onChange={updateSecondImage} />
-                <input
-                    type="text"
-                    placeholder="Third Image URL"
-                    value={thirdImage}
-                    onChange={updateThirdImage} />
-                <input
-                    type="text"
-                    placeholder="Fourth Image URL"
-                    value={fourthImage}
-                    onChange={updateFourthImage} />
-                <input
-                    type="text"
-                    placeholder="Fifth Image URL"
-                    value={fifthImage}
-                    onChange={updateFifthImage} />
-                <button type="submit">Create new Spot</button>
+                <button type="submit">Update</button>
                 <button type="button" onClick={handleCancelClick}>Cancel</button>
             </form>
         </section>
     );
 };
 
-export default CreateNewSpotForm
+export default EditSpotForm
