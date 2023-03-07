@@ -12,10 +12,10 @@ const updateSpot = (spot) => {
     }
 }
 
-const addImageToSpot = (image) => {
+const addImageToSpot = (spotId, image) => {
     return{
         type:ADD_IMAGE,
-        image
+        payload: {spotId, image}
     }
 }
 
@@ -55,7 +55,6 @@ export const getUserSpotsThunk = (user) => async dispatch => {
     let ownedSpotsObj = {}
 
     ownerSpots.map(spot => ownedSpotsObj[spot.id]=spot)
-    console.log(ownedSpotsObj)
     return dispatch(populateAllSpots(ownedSpotsObj))
 }
 
@@ -70,18 +69,31 @@ export const addSpotThunk = (spot) => async dispatch => {
 
     if (response.ok){
         const newSpot = await response.json()
-        console.log(newSpot)
-        console.log(images)
-        for await (let image of images){
-            console.log(image,"image")
+
+        const attachImages = images.map((url, i) => {
+            let obj
+            if(i===0){
+                return obj = {previewImage : true,
+                url : url}
+            }else{
+                return obj = {previewImage : false,
+                    url : url}
+            }
+        })
+
+        console.log(attachImages)
+
+        for await (let image of attachImages){
+            const {previewImage, url} = image
+            console.log(image,"IMAGE", previewImage, "PRE IMG", url, "URL")
             let imageRes = await csrfFetch(`/api/spots/${newSpot.id}/images`,{
                 method: 'POST',
-                body: JSON.stringify(image)
+                body: JSON.stringify({previewImage: previewImage, url: url})
             })
-            console.log(image,"image")
+            console.log(imageRes, "BEFORE JSON IMAGE RES")
             imageRes = await imageRes.json()
-            console.log(imageRes, "IMAGE RES")
-            dispatch(addImageToSpot(imageRes))
+            console.log(imageRes, "IMAGE RES JSON")
+            dispatch(addImageToSpot(newSpot.id, imageRes))
         }
         dispatch(showSpotDetail(newSpot))
         return newSpot
@@ -98,7 +110,23 @@ export const addSpotThunk = (spot) => async dispatch => {
     // }
 }
 
+export const editSpotThunk = (spot) => async dispatch => {
 
+    const {address, city, state, country, lat, lng, name, description, price} = spot 
+
+    const response = await csrfFetch(`/api/spots/${spot.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({address, city, state, country, lat, lng, name, description, price})
+    })
+    
+    const data = await response.json()
+
+    if(response.ok){
+        return dispatch(updateSpot(data))
+    }
+    
+
+}
 
 const spotReducer = (state = {}, action) => {
     let newState = {}
@@ -115,7 +143,9 @@ const spotReducer = (state = {}, action) => {
             }
             return newState
         case ADD_IMAGE:
-            return {...state, [action.image.id]: {...state[action.image.id]}}
+            return {...state, [action.payload.spotId]: {...state, [action.payload.spotId.SpotImages]: action.payload.image}}
+        case UPDATE_SPOT:
+            return {...state, [action.spot.id]: {...state, ...action.spot}}
         default:
         return state
     }

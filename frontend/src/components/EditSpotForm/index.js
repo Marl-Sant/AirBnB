@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { addSpotThunk, getSpotDetail } from '../../store/spots';
+import { editSpotThunk } from '../../store/spots';
 
 const EditSpotForm = ({ hideForm }) => {
 
@@ -49,14 +50,13 @@ const EditSpotForm = ({ hideForm }) => {
             name,
             description,
             price,
-            //J'S CODE
-            // images: [firstImage, secondImage, thirdImage, fourthImage, fifthImage]
-        };
+           };
         
-        let newSpot = await dispatch(addSpotThunk(payload))
-        if (newSpot) {
-            let spotId = newSpot.id
-            history.push(`/spots/${spotId}`);
+        let editedSpot = await dispatch(editSpotThunk(payload))
+        let spotId = editedSpot.spot.id
+        console.log(spotId, editedSpot)
+        if (editedSpot) {
+            history.push(`/spots/${spotId}`)
             dispatch(getSpotDetail(spotId))
         }
     };

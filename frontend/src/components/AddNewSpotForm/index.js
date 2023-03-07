@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { addSpotThunk, getSpotDetail } from '../../store/spots';
-import { addImageThunk } from '../../store/spotImages';
 
 const CreateNewSpotForm = ({ hideForm }) => {
 
@@ -60,8 +59,6 @@ const CreateNewSpotForm = ({ hideForm }) => {
             //J'S CODE
             images: [firstImage, secondImage, thirdImage, fourthImage, fifthImage]
         };
-        
-        console.log(firstImage)
 
         let newSpot = await dispatch(addSpotThunk(payload))
         if (newSpot) {

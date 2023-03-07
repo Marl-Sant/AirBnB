@@ -189,14 +189,14 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         })
     } else {
         if (spotLocator.ownerId === req.user.id) {
-            const { url, preview } = req.body
+            const { url, previewImage } = req.body
 
             console.log(url, "MAKE SURE TO ADD A TAG TO IT OR YOU WONT FIND IT IN THE LOG")
             
             const freshPic = await SpotImage.create({
                 spotId: req.params.spotId,
                 url: url,
-                previewImage: preview
+                previewImage: previewImage
             })
             console.log(freshPic)
             res.json({

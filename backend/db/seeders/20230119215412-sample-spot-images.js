@@ -12,7 +12,7 @@ module.exports = {
     options.tableName = 'SpotImages';
     await queryInterface.bulkInsert(options, [{
       spotId: 1,
-      url: "PREVIEW IMAGE URL 1",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678151508/ugly3_hs94oh.jpg",
       previewImage: true
     },
     {
@@ -22,7 +22,7 @@ module.exports = {
     },
     {
       spotId: 2,
-      url: "PREVIEW IMAGE URL 2",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678151494/52d8f9ad5c3e3c6a5b0033f4.format-webp.width-1440_AcuQiV0Iv4hyThCK_t6pzk8.webp",
       previewImage: true
     },
     {
@@ -32,7 +32,7 @@ module.exports = {
     },
     {
       spotId: 3,
-      url: "PREVIEW IMAGE URL 3",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678151608/webuyhouseshouse_bandits_qslkqp.jpg",
       previewImage: true
     }, 
     {
@@ -42,8 +42,8 @@ module.exports = {
     }, 
     {
       spotId: 4,
-      url: "PREVIEW IMAGE URL 4",
-      previewImage: false
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678151696/_5dc395f4-aad7-11e9-bdb2-acd0277ecbef_n4exb0.jpg",
+      previewImage: true
     }, 
     {
       spotId: 4,
