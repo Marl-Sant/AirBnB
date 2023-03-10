@@ -4,10 +4,18 @@ const POPULATE_SPOTS = 'spots/populateSpots'
 const SPOT_DETAIL = 'spots/spotDetail'
 const UPDATE_SPOT = 'spots/updateSpot'
 const ADD_IMAGE = 'spots/add_Image'
+const DELETE_SPOT = 'spots/delete_Spot'
 
 const updateSpot = (spot) => {
     return{
         type: UPDATE_SPOT,
+        spot
+    }
+}
+
+const deleteSpot = (spot) => {
+    return{
+        type: DELETE_SPOT,
         spot
     }
 }
@@ -128,24 +136,38 @@ export const editSpotThunk = (spot) => async dispatch => {
 
 }
 
+export const deleteSpotThunk = (spot) => async dispatch => {
+    const response = await csrfFetch(`/api/spots/${spot.id}`, {
+        method:'DELETE'
+    })
+    const data = await response.json()
+    if(response.ok){
+        dispatch(deleteSpot(data))
+    }
+}
+
 const spotReducer = (state = {}, action) => {
     let newState = {}
     switch (action.type) {
         case POPULATE_SPOTS:
         //    newState = {...state, ...action.spots}
            Object.values(action.spots).forEach(spot => newState[spot.id] = spot)
-           return {...state, ...newState}
+           return {...newState}
         case SPOT_DETAIL:
             newState = {...state}
             newState[action.spot.id] = action.spot
             if(newState[undefined]){
             delete newState['undefined']
             }
-            return newState
+            return newState[action.spot.id]
         case ADD_IMAGE:
             return {...state, [action.payload.spotId]: {...state, [action.payload.spotId.SpotImages]: action.payload.image}}
         case UPDATE_SPOT:
             return {...state, [action.spot.id]: {...state, ...action.spot}}
+        case DELETE_SPOT:
+            newState = {...state}
+            delete newState[action.spot.id]
+            return newState
         default:
         return state
     }

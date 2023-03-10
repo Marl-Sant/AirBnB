@@ -273,10 +273,7 @@ router.delete("/:spotId", requireAuth, async (req, res, next) => {
     if (toBeDeleted.ownerId === req.user.id) {
         if (toBeDeleted) {
             await toBeDeleted.destroy()
-            res.json({
-                message: "Successfully deleted",
-                statusCode: 200
-            })
+            res.json(toBeDeleted)
         }
     } else {
         res.status(401)

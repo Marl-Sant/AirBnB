@@ -35,7 +35,7 @@ router.delete('/:reviewId', requireAuth, async (req, res, next)=> {
         res.json({message:'Operation failed. Must be the owner of the review to deleted.', statusCode: 401})
     }else{
         await tobeDeleted.destroy()
-        res.json({message:"Successfully deleted", statusCode: 200})
+        res.json(tobeDeleted)
     }
 })
 

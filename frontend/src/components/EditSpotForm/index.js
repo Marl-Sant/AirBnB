@@ -54,7 +54,6 @@ const EditSpotForm = ({ hideForm }) => {
         
         let editedSpot = await dispatch(editSpotThunk(payload))
         let spotId = editedSpot.spot.id
-        console.log(spotId, editedSpot)
         if (editedSpot) {
             history.push(`/spots/${spotId}`)
             dispatch(getSpotDetail(spotId))
