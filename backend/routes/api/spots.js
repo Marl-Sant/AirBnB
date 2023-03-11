@@ -237,15 +237,15 @@ router.post('/:spotId/reviews', validateReviewInfo, requireAuth, async (req, res
 
 //CREATE A NEW SPOT
 router.post('/', validateSpotInfo, requireAuth, async (req, res, next) => {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body
+    const { address, city, state, country, /*lat, lng,*/ name, description, price } = req.body
     const newSpot = await Spot.create({
         ownerId: req.user.id,
         address: address,
         city: city,
         state: state,
         country: country,
-        lat: lat,
-        lng: lng,
+        // lat: lat,
+        // lng: lng,
         name: name,
         description: description,
         price: price
@@ -413,14 +413,14 @@ router.put('/:spotId', validateSpotInfo, requireAuth, async (req, res, next) => 
     }
     
     if (editSpot.ownerId === req.user.id) {
-        const { address, city, state, country, lat, lng, name, description, price } = req.body
+        const { address, city, state, country, /*lat, lng,*/ name, description, price } = req.body
 
         editSpot.address = address
         editSpot.city = city
         editSpot.state = state
         editSpot.country = country
-        editSpot.lat = lat
-        editSpot.lng = lng
+        // editSpot.lat = lat
+        // editSpot.lng = lng
         editSpot.name = name
         editSpot.description = description
         editSpot.price = price
@@ -478,7 +478,7 @@ router.put('/:spotId', validateSpotInfo, requireAuth, async (req, res, next) => 
 router.get('/', async (req, res, next) => {
     
     
-    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
+    let { page, size, /*minLat, maxLat, minLng, maxLng,*/ minPrice, maxPrice } = req.query
     
     if (page <= 0) {
         res.status(400)
@@ -553,17 +553,17 @@ router.get('/', async (req, res, next) => {
     
     if (!page || isNaN(page) || page > 10) { page = 1 }
     if (!size || isNaN(size) || size > 20) { size = 20 }
-    if (!minLat) { minLat = -90 }
-    if (!maxLat) { maxLat = 90 }
-    if (!minLng) { minLng = -180 }
-    if (!maxLng) { maxLng = 180 }
+    // if (!minLat) { minLat = -90 }
+    // if (!maxLat) { maxLat = 90 }
+    // if (!minLng) { minLng = -180 }
+    // if (!maxLng) { maxLng = 180 }
     if (!minPrice) { minPrice = 1 }
     if (!maxPrice) { maxPrice = 100000 }
     
     const searchedSpots = await Spot.findAll({
         where: {
-            lat: { [Op.between]: [minLat, maxLat] },
-            lng: { [Op.between]: [minLng, maxLng] },
+            // lat: { [Op.between]: [minLat, maxLat] },
+            // lng: { [Op.between]: [minLng, maxLng] },
             price: { [Op.between]: [minPrice, maxPrice] },
         },
         include:[
