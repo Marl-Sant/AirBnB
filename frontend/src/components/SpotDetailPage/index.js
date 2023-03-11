@@ -30,6 +30,7 @@ function SpotDetailPage() {
             <div>
                 {isLoaded && (<div>
                     <h1>{spot.name}</h1>
+                    {spot.city},{spot.state},{spot.country}
                     {spot.SpotImages.map(image => <img src={image.url}/>)}
                     <h2>{spot.city},{spot.state},{spot.country}</h2>
                     {spotReviews.reverse().map(review => 
@@ -42,6 +43,10 @@ function SpotDetailPage() {
                     </div>
                     )}
                     <h1>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h1>
+                    {spot.description}
+                    ${spot.price}night
+                    STAR{spot.avgStarRating}
+                    Number of Reviews{spot.numReviews}
 
                     {!sessionUser || sessionUser.id !== spot.ownerId && (<OpenModalMenuItem
                 itemText="Post Your Review"

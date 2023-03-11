@@ -391,6 +391,13 @@ const spotList = await Spot.findOne({
         })
     }
 
+    let average = 0
+        spotList.Reviews.forEach(review => {
+            average += review.dataValues.stars
+        })
+        average = average/spotList.Reviews.length
+        spotList.dataValues.avgStarRating = average
+
     spotList.dataValues.numReviews = spotList.Reviews.length;
     delete spotList.dataValues.Reviews
             

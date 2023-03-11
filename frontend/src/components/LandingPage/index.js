@@ -23,7 +23,7 @@ function LandingPage() {
             <NavLink to={`/spots/${spot.id}`}>
             <img src={spot.previewImage}/>
             <p>{spot.city},{spot.state}</p>
-            <p>{spot.price}</p>
+            <p>${spot.price}night</p>
             <p>{spot.avgStarRating} STARS</p>
             </NavLink>
             </div>))}

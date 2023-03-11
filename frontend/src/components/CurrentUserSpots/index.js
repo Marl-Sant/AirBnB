@@ -27,7 +27,7 @@ function CurrentUserSpots() {
         {isLoaded && 
         spots.map((spot) => 
         (<div key={spot.id}><NavLink to={`/spots/${spot.id}`}>
-            {spot.city},{spot.state}{spot.avgStarRating}STARS {spot.price}PER NIGHT</NavLink>
+            <img src={spot.previewImage}/>{spot.city},{spot.state}{spot.avgStarRating}STARS {spot.price}PER NIGHT</NavLink>
             <button><NavLink to={`/spots/${spot.id}/edit`}>UPDATE</NavLink></button>
             <OpenModalMenuItem
                 itemText="Delete"
