@@ -17,7 +17,7 @@ module.exports = {
     },
     {
       spotId: 1,
-      url: "NONPREVIEW IMAGE URL 1",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678153248/800px-Equality_House_-_Rainbow_House_Across_Street_from_Westboro_Baptist_Church__Topeka__Kansas__30224409157_auuxtu.jpg",
       previewImage: false
     },
     {
@@ -27,7 +27,7 @@ module.exports = {
     },
     {
       spotId: 2,
-      url: "NONPREVIEW IMAGE URL 2",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678153248/800px-Equality_House_-_Rainbow_House_Across_Street_from_Westboro_Baptist_Church__Topeka__Kansas__30224409157_auuxtu.jpg",
       previewImage: false
     },
     {
@@ -37,7 +37,7 @@ module.exports = {
     }, 
     {
       spotId: 3,
-      url: "NONPREVIEW IMAGE URL 3",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678152994/ZbKwuazZYQTcjxVWPnH-NLTGC4IOB81uEP_9DF9UFCE_if4gtl.webp",
       previewImage: false
     }, 
     {
@@ -47,7 +47,7 @@ module.exports = {
     }, 
     {
       spotId: 4,
-      url: "NONPREVIEW IMAGE URL 4",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678152892/d1f86c5b39a0ad3243f3897dcb65657d_h3rziv.jpg",
       previewImage: false
     }
    ], {});
