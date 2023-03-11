@@ -43,9 +43,11 @@ module.exports = {
       },
       lat: {
         type: Sequelize.FLOAT,
+        defaultValue:0
       },
       lng: {
         type: Sequelize.FLOAT,
+        defaultValue:0
       },
       name: {
         type: Sequelize.STRING,
