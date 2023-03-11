@@ -25,8 +25,7 @@ function PostAReviewModal(spotId) {
 
         return dispatch(reviewActions.addASpotReview(payload))
             .then(closeModal)
-            .catch(
-        );
+            .catch();
     };
 
     return (

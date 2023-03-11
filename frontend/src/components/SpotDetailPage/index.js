@@ -14,6 +14,7 @@ function SpotDetailPage() {
     const { spotId } = useParams()
     const spot = useSelector((state) => state.spots)
     let reviews = useSelector((state) => state.reviews)
+    const sessionUser = useSelector((state) => state.session.user)
 
     const closeMenu = () => setShowMenu(false);
 
@@ -31,20 +32,22 @@ function SpotDetailPage() {
                     <h1>{spot.name}</h1>
                     {spot.SpotImages.map(image => <img src={image.url}/>)}
                     <h2>{spot.city},{spot.state},{spot.country}</h2>
-                    {spotReviews.map(review => 
-                    <div>{review.review} <OpenModalMenuItem
+                    {spotReviews.reverse().map(review => 
+                    <div>{review.review} 
+                    {!sessionUser || sessionUser.id === review.userId && (<OpenModalMenuItem
                     itemText="Delete"
                     onItemClick={closeMenu}
                     modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spot.id}/>}
-                    /></div>
+                    />)}
+                    </div>
                     )}
                     <h1>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h1>
 
-                    <OpenModalMenuItem
+                    {!sessionUser || sessionUser.id !== spot.ownerId && (<OpenModalMenuItem
                 itemText="Post Your Review"
                 onItemClick={closeMenu}
                 modalComponent={<PostAReviewModal spotId={spotId}/>}
-                />
+                />)}
                 </div>
                 )
                 }

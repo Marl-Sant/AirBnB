@@ -41,6 +41,10 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
+  const handleSubmit = (e) =>{
+    dispatch(sessionActions.demoLogin())
+  }
+
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
   return (
@@ -73,6 +77,9 @@ function ProfileButton({ user }) {
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
+            <li>
+              <button type='submit' onClick={handleSubmit}>Demo User Login</button>
+            </li>
           </>
         )}
       </ul>
