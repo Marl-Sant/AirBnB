@@ -21,6 +21,7 @@ function DeleteSpotModal(spot) {
     <div>
       Are you sure you want to delete this spot? This action cannot be reversed.
       <button type='submit' onClick={handleSubmit}>Confirm</button>
+      <button onClick={closeModal}>Cancel</button>
     </div>
   );
 }

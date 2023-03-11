@@ -24,17 +24,13 @@ const validateSpotInfo = [
         .exists({ checkFalsy: true })
         .notEmpty()
         .withMessage('Country is required'),
-    check('lat')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .isDecimal({ checkFalsy: true })
-        .withMessage('Latitude is not valid'),
-    check('lng')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .isDecimal({ checkFalsy: true })
-        .toFloat()
-        .withMessage('Latitude is not valid'),
+    // check('lat')
+    //     .isDecimal({ checkFalsy: true })
+    //     .withMessage('Latitude is not valid'),
+    // check('lng')
+    //     .isDecimal({ checkFalsy: true })
+    //     .toFloat()
+    //     .withMessage('Latitude is not valid'),
     check('name')
         .exists({ checkFalsy: true })
         .isLength({ max: 49 })
@@ -504,46 +500,46 @@ router.get('/', async (req, res, next) => {
             }
         })
     }
-    if (maxLat > 90) {
-        res.status(400)
-        return res.json({
-            message: "Validation Error",
-            statusCode: 400,
-            errors: {
-                page: "Maximum latitude is invalid"
-            }
-        })
-    }
-    if (minLat < -90) {
-        res.status(400)
-        return res.json({
-            message: "Validation Error",
-            statusCode: 400,
-            errors: {
-                page: "Minimum latitude is invalid"
-            }
-        })
-    }
-    if (minLng < -180) {
-        res.status(400)
-        return res.json({
-            message: "Validation Error",
-            statusCode: 400,
-            errors: {
-                page: "Minimum longitude is invalid"
-            }
-        })
-    }
-    if (maxLng > 180) {
-        res.status(400)
-        return res.json({
-            message: "Validation Error",
-            statusCode: 400,
-            errors: {
-                page: "Maximum longitude is invalid"
-            }
-        })
-    }
+    // if (maxLat > 90) {
+    //     res.status(400)
+    //     return res.json({
+    //         message: "Validation Error",
+    //         statusCode: 400,
+    //         errors: {
+    //             page: "Maximum latitude is invalid"
+    //         }
+    //     })
+    // }
+    // if (minLat < -90) {
+    //     res.status(400)
+    //     return res.json({
+    //         message: "Validation Error",
+    //         statusCode: 400,
+    //         errors: {
+    //             page: "Minimum latitude is invalid"
+    //         }
+    //     })
+    // }
+    // if (minLng < -180) {
+    //     res.status(400)
+    //     return res.json({
+    //         message: "Validation Error",
+    //         statusCode: 400,
+    //         errors: {
+    //             page: "Minimum longitude is invalid"
+    //         }
+    //     })
+    // }
+    // if (maxLng > 180) {
+    //     res.status(400)
+    //     return res.json({
+    //         message: "Validation Error",
+    //         statusCode: 400,
+    //         errors: {
+    //             page: "Maximum longitude is invalid"
+    //         }
+    //     })
+    // }
     if (maxPrice < 0) {
         res.status(400)
         return res.json({
