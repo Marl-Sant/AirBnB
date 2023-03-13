@@ -61,7 +61,7 @@ function PostAReviewModal(spotId) {
 
 
             {/* <input type="number" placeholder="How Many Stars?" value={stars} onChange={updateStars} min={1} max={5} /> */}
-            <button type='submit' onClick={handleSubmit} className='button-class'>Submit Your Review</button>
+            <button type='submit' disabled={stars === 0 || review.length < 10} onClick={handleSubmit} className='button-class'>Submit Your Review</button>
         </div>
     );
 }

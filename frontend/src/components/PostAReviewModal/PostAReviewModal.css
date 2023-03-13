@@ -27,6 +27,11 @@
     background-color: #767676;
 }
 
+.button-class:disabled{
+    background-color: #484848;
+    color: #484848;
+}
+
 .button-class::shadow{
     color: black;
 }

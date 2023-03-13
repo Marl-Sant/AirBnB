@@ -17,7 +17,9 @@ function OpenModalMenuItem({
   };
 
   return (
+    <li style={{listStyleType: "none"}}>
     <button className='fake-link' onClick={onClick}>{itemText}</button>
+    </li>
   );
 }
 
