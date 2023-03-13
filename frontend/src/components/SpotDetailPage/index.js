@@ -7,6 +7,7 @@ import PostAReviewModal from "../PostAReviewModal";
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import DeleteReviewModal from '../DeleteAReviewModal'
 
+
 function SpotDetailPage() {
     const dispatch = useDispatch()
     const [isLoaded, setIsLoaded] = useState(false)
@@ -63,7 +64,7 @@ function SpotDetailPage() {
                     </div>
 
                     <div btn-div>
-                    <button className="RSVP-btn">Reserve Your Stay!</button>
+                    <button className='button-class-no-maam'>Reserve Your Stay! (Feature Coming Soon)</button>
                     </div>
 
                     <div className="review-container">
@@ -84,7 +85,7 @@ function SpotDetailPage() {
                     </div>
                     )}
 
-                    {!sessionUser || reviewCheck.length > 0 || sessionUser.id !== spot.ownerId && (<button className="post-review-btn"><OpenModalMenuItem
+                    {!sessionUser || reviewCheck.length > 0 || sessionUser.id !== spot.ownerId && (<button className="fake-link"><OpenModalMenuItem
                 itemText="Post Your Review"
                 onItemClick={closeMenu}
                 modalComponent={<PostAReviewModal spotId={spotId}/>}
