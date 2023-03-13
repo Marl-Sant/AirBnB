@@ -24,7 +24,7 @@ function SpotDetailPage() {
     }, [dispatch, spotId])
 
     
-    let reviewCheck
+    let reviewCheck = []
     reviews = Object.values(reviews)
     const spotReviews = reviews.filter(review => review.spotId === Number(spotId))
     if(sessionUser){
@@ -56,7 +56,7 @@ function SpotDetailPage() {
                     STAR{spot.avgStarRating}
                     Number of Reviews{spotReviews.length}
 
-                    {!sessionUser || reviewCheck.length || sessionUser.id !== spot.ownerId && (<OpenModalMenuItem
+                    {!sessionUser || reviewCheck.length > 0 || sessionUser.id !== spot.ownerId && (<OpenModalMenuItem
                 itemText="Post Your Review"
                 onItemClick={closeMenu}
                 modalComponent={<PostAReviewModal spotId={spotId}/>}
