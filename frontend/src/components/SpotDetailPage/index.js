@@ -54,7 +54,7 @@ function SpotDetailPage() {
                     {spot.description}
                     ${spot.price}night
                     STAR{spot.avgStarRating}
-                    Number of Reviews{spot.numReviews}
+                    Number of Reviews{spotReviews.length}
 
                     {!sessionUser || reviewCheck.length || sessionUser.id !== spot.ownerId && (<OpenModalMenuItem
                 itemText="Post Your Review"
