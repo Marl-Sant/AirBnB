@@ -1,4 +1,4 @@
-.make-spot-container{
+.edit-spot-container{
     position: relative;
     display: flex;
     flex-direction: column;
@@ -10,62 +10,62 @@
     padding-right: 15px;
 }
 
-.error-div{
+.edit-error-div{
     color: #FF5A5F;
     font-weight: bold;
 
 }
 
-.price-div{
+.edit-price-div{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
 }
 
-.country-street-title-price-image-fields{
+.edit-country-street-title-price-image-fields{
     height: 15px;
     width: 275px;
 }
 
-.city-text{
+.edit-city-text{
     position: relative;
     left: calc(-115px);
     top: calc((15px))
 }
 
-.street-text{
+.edit-street-text{
     position: relative;
     left: calc(-95px);
     top: calc(15px)
 }
 
-.city-state-div{
+.edit-city-state-div{
     display: flex;
     flex-direction: row;
     margin: 10px;
 }
 
-.city-state-text{
+.edit-city-state-text{
     position: relative;
     left:calc(-15px)
 }
 
-.city-field{
+.edit-city-field{
     position: relative;
     left: calc(-50px)
 }
 
-.street-field{
+.edit-street-field{
     width: 70px;
 }
 
-.describe-text-area{
+.edit-describe-text-area{
     height: 150px;
     width: 500px;
 }
 
-.button-class-no-spot{
+.edit-button-class-no-spot{
     height:30px;
     width:150px;
     font-size: 15px;
@@ -73,7 +73,7 @@
     background-color:#767676;
 }
 
-.button-class-new-spot{
+.edit-button-class-new-spot{
     height:30px;
     width:150px;
     font-size: 15px;

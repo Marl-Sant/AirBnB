@@ -17,9 +17,7 @@ function OpenModalMenuItem({
   };
 
   return (
-    <li>
     <button className='fake-link' onClick={onClick}>{itemText}</button>
-    </li>
   );
 }
 

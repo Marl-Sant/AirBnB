@@ -22,6 +22,7 @@ const CreateNewSpotForm = ({ hideForm }) => {
     const [thirdImage, setThirdImage] = useState('')
     const [fourthImage, setFouthImage] = useState('')
     const [fifthImage, setFifthImage] = useState('')
+    const [errors, setErrors] = useState([]);
 
     const updateLat = (e) => setLat(e.target.value);
     const updateLng = (e) => setLng(e.target.value);
@@ -37,15 +38,48 @@ const CreateNewSpotForm = ({ hideForm }) => {
     const updateThirdImage = (e) => setThirdImage(e.target.value)
     const updateFourthImage = (e) => setFouthImage(e.target.value)
     const updateFifthImage = (e) => setFifthImage(e.target.value)
-
-
-
+    
+    
+    
     useEffect(() => {
-
+        
     }, []);
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrors([])
+        let errorsArr = []
+        if(!country.length){
+            errorsArr.push('Country is required')
+        }
+        if(!address.length){
+            errorsArr.push('Address is required')
+        }
+        if(!city.length){
+            errorsArr.push('City is required')
+        }
+        if(!state.length){
+            errorsArr.push('State is required')
+        }
+        if(description.length < 30){
+            errorsArr.push('Description needs a minimum of 30 characters')
+        }
+        if(!name.length){
+            errorsArr.push('Name is required')
+        }
+        if(!price.length || price === 0){
+            errorsArr.push('Price is required')
+        }
+        if(!firstImage.length){
+            errorsArr.push('Preview image is required')
+        }
+
+        setErrors(errorsArr)
+
+        if(errorsArr.length){
+            return errors
+        }
+
 
         const payload = {
             address,
@@ -77,6 +111,9 @@ const CreateNewSpotForm = ({ hideForm }) => {
     return (
         <section className='make-spot-container'>
             <h1>Create a new Spot</h1>
+
+            {errors.map(error => <div className='error-div' key={error}>{error}</div>)}
+
             <h3>Where's your place located?</h3>
             <p>Guests will only get your exact address once they booked a reservation.</p>
             <form onSubmit={handleSubmit} className='make-spot-container'>
@@ -90,7 +127,6 @@ const CreateNewSpotForm = ({ hideForm }) => {
                 className='country-street-title-price-image-fields'
                     type="text"
                     placeholder="Street address"
-                    required
                     value={address}
                     onChange={updateAddress} />
                 <div>
@@ -101,14 +137,14 @@ const CreateNewSpotForm = ({ hideForm }) => {
                     className=''
                     type="text"
                     placeholder="City"
-                    required
+    
                     value={city}
                     onChange={updateCity} />,
                 <input
                     className='street-field'
                     type="text"
                     placeholder="State"
-                    required
+                  
                     value={state}
                     onChange={updateState} />
                 </div>
@@ -160,7 +196,7 @@ in search results.
                 className='country-street-title-price-image-fields'
                     type="text"
                     placeholder="Preview Image URL"
-                    required
+    
                     value={firstImage}
                     onChange={updateFirstImage} />
                 <input
@@ -188,7 +224,6 @@ in search results.
                     value={fifthImage}
                     onChange={updateFifthImage} />
                 <button type="submit" className='button-class-new-spot'>Create new Spot</button>
-                <button type="button" className='button-class-no-spot' onClick={handleCancelClick}>Cancel</button>
             </form>
         </section>
     );

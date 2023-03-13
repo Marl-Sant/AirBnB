@@ -24,6 +24,11 @@ function LoginFormModal() {
       );
   };
 
+  const handleDemoLogIn = (e) =>{
+    dispatch(sessionActions.demoLogin())
+    closeModal()
+  }
+
   return (
     <div className="login-container">
       <h1>Log In</h1>
@@ -40,7 +45,6 @@ function LoginFormModal() {
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
-            required
           />
         </label>
         <br></br>
@@ -51,11 +55,11 @@ function LoginFormModal() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
           />
         </label>
         <br></br>
         <button type="submit" className="button-class-login">Log In</button>
+        <button className="button-class-login" onClick={handleDemoLogIn} >Demo User Login</button>
       </form>
     </div>
   );

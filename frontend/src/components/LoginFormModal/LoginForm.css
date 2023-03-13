@@ -1,7 +1,7 @@
 .login-container {
     background-color: white;
     display: flex;
-    height:200px;
+    height: 400px;
     width:300px;
     flex-direction: column;
     justify-content: center;
@@ -10,6 +10,10 @@
     border: solid black 3px;
     border-radius: 1px;
     padding: 10px;
+}
+
+.login-container li {
+    list-style-type:none;
 }
 
 .text-field{
