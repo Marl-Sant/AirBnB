@@ -1,0 +1,170 @@
+.spot-image {
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 25vw);
+    grid-gap: 5px;
+
+}
+
+.spot-img img:first-child {
+grid-column-start: 1;
+grid-column-end: 3;
+grid-row-start: 1;
+grid-row-end: 3;
+height: 800px;
+width: 900px;
+
+}
+
+.spot-img img:not(:first-child) {
+height: 400px;
+width: 450px;
+
+}
+
+.spot-img img:nth-child(2) {
+grid-column-start: 1;
+grid-column-end: 3;
+grid-row-start: 4;
+grid-row-end: 5;
+position: relative;
+bottom: 400px
+
+}
+
+.spot-img img:nth-child(3) {
+position: relative;
+grid-column-start: 3;
+grid-column-end: 4;
+grid-row-start: 2;
+grid-row-end: 3;
+bottom: 400px
+
+}
+
+.spot-img img:nth-child(4) {
+position: relative;
+grid-column-start: 4;
+grid-column-end: 5;
+grid-row-start: 1;
+grid-row-end: 2;
+left: 900px;
+bottom: 405px
+
+
+
+}
+
+.spot-img img:nth-child(5) {
+position: relative;
+grid-column-start: 4;
+grid-column-end: 5;
+grid-row-start: 2;
+grid-row-end: 3;
+left: 900px;
+bottom: 405px
+
+}
+.spot-info h2{
+font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+font-size: 30px;
+
+}
+.spot-info p{
+font-size: 18px;
+}
+.owner{
+position: relative;
+display: flex;
+font-size: 20px;
+bottom: 445px
+}
+
+.spot-descript{
+display: flex;
+position: relative;
+bottom: 315px;
+}
+.booking{
+position: relative;
+width: 18%;
+box-sizing: content-box;
+border: 1px solid black;
+padding: 10px;
+border-radius: 5px;
+display: flex;
+font-size: 18px;
+left: 1439px;
+bottom: 514px;
+
+}
+
+.RSVP-btn{
+position: relative;
+top: 38px;
+left: -209px;
+width: 410%;
+padding: 7px;
+background-color: blueviolet;
+font-weight: bold;
+
+}
+
+.book-price{
+position: relative;
+bottom: 23px;
+width: 25%;
+font-size: 20px
+}
+
+.book-review-count{
+position: relative;
+left: 140px;
+bottom: 20px;
+width: 25%;
+}
+
+
+.book-star{
+position: relative;
+left: 80px;
+bottom: 20px;
+width: 25%;
+color: rgb(102, 4, 102);
+}
+
+.review-container{
+display: flex;
+position: relative;
+border-top: 1px solid black;
+bottom: 400px;
+}
+.post-review-btn{
+position: relative;
+height: 20px;
+width: 7%;
+list-style-type: none;
+top: 35px;
+left: -55px;
+background-color: blueviolet;
+}
+.review-star{
+
+position: relative;
+left: 10px;
+font-size: 15px;
+color: rgb(102, 4, 102);
+}
+
+
+.review-count{
+position: relative;
+left: 110px;
+bottom: 30px;
+
+}
+.rev-contains{
+position: relative;
+bottom: 385px;
+}

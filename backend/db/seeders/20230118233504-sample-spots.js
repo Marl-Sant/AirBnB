@@ -17,8 +17,8 @@ module.exports = {
         country: "USA",
         lat: 49.18254,
         lng: 15.34587,
-        name: "3 Bedrooms and 2 Bathrooms",
-        description: "Single family home",
+        name: "Single Family Home -- Great for Families",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         price: 143
       },
     {
@@ -29,8 +29,8 @@ module.exports = {
       country: "USA",
       lat: 42.465782,
       lng: 17.465874,
-      name: "2300 square feet",
-      description: "Duplex property",
+      name: "Small Condo for Retirees",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       price: 165
     },
     {
@@ -41,8 +41,8 @@ module.exports = {
       country: "USA",
       lat: 41.466282,
       lng: 11.95874,
-      name: "Small seaside condo",
-      description: "Guest house on location",
+      name: "Studio Apartment in Downtown",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       price: 122
     }, 
     {
@@ -53,8 +53,8 @@ module.exports = {
       country: "USA",
       lat: 41.466282,
       lng: 11.95874,
-      name: "Villa",
-      description: "Located in retirement village - 55+ older renters only",
+      name: "Seaside Villa -- 5 mins from Beach!",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       price: 122
     },
   

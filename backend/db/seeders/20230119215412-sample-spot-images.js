@@ -12,22 +12,32 @@ module.exports = {
     options.tableName = 'SpotImages';
     await queryInterface.bulkInsert(options, [{
       spotId: 1,
-      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678151508/ugly3_hs94oh.jpg",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678737612/b490fb4f41473bdd44b2dce317b8a0c0_ijdbix.jpg",
       previewImage: true
     },
     {
       spotId: 1,
-      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678153248/800px-Equality_House_-_Rainbow_House_Across_Street_from_Westboro_Baptist_Church__Topeka__Kansas__30224409157_auuxtu.jpg",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678737613/download_1_o14roz.jpg",
+      previewImage: false
+    },
+    {
+      spotId: 1,
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678737616/download_2_t14fwr.jpg",
       previewImage: false
     },
     {
       spotId: 2,
-      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678151494/52d8f9ad5c3e3c6a5b0033f4.format-webp.width-1440_AcuQiV0Iv4hyThCK_t6pzk8.webp",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678737616/download_2_t14fwr.jpg",
       previewImage: true
     },
     {
       spotId: 2,
-      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678153248/800px-Equality_House_-_Rainbow_House_Across_Street_from_Westboro_Baptist_Church__Topeka__Kansas__30224409157_auuxtu.jpg",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678737621/download-23_y6xhat.jpg",
+      previewImage: false
+    },
+    {
+      spotId: 2,
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678737628/istockphoto-1249280573-612x612_z87m4v.jpg",
       previewImage: false
     },
     {
@@ -37,17 +47,22 @@ module.exports = {
     }, 
     {
       spotId: 3,
-      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678152994/ZbKwuazZYQTcjxVWPnH-NLTGC4IOB81uEP_9DF9UFCE_if4gtl.webp",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678737628/istockphoto-1249280573-612x612_z87m4v.jpg",
+      previewImage: false
+    }, 
+    {
+      spotId: 3,
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678737624/Holly_Hills_1CMYK_exyvvt.jpg",
       previewImage: false
     }, 
     {
       spotId: 4,
-      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678151696/_5dc395f4-aad7-11e9-bdb2-acd0277ecbef_n4exb0.jpg",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678153248/800px-Equality_House_-_Rainbow_House_Across_Street_from_Westboro_Baptist_Church__Topeka__Kansas__30224409157_auuxtu.jpg",
       previewImage: true
     }, 
     {
       spotId: 4,
-      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678152892/d1f86c5b39a0ad3243f3897dcb65657d_h3rziv.jpg",
+      url: "https://res.cloudinary.com/dhruiovd0/image/upload/v1678737624/Holly_Hills_1CMYK_exyvvt.jpg",
       previewImage: false
     }
    ], {});

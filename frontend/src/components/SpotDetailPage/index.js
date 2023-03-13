@@ -37,12 +37,45 @@ function SpotDetailPage() {
         <>
             <div>
                 {isLoaded && (<div>
+                    <div className="spot-info">
                     <h1>{spot.name}</h1>
                     {spot.city},{spot.state},{spot.country}
+                    </div>
+                    <div className="spot-img">
                     {spot.SpotImages.map(image => <img src={image.url} key={image.id}/>)}
-                    <h2>{spot.city},{spot.state},{spot.country}</h2>
+                    </div>
+                    <div className="spot-descript">
+                    {spot.description}
+                    </div>
+                    <div className="owner">
+                    <h1>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h1>
+                    </div>
+                    <div className="booking">
+                    <div className="book-price">
+                    ${spot.price}night
+                    </div>
+                    <div className="book-star">
+                    <i className='fa-solid fa-star' />{spot.avgStarRating.toFixed(2)}
+                    </div>
+                    <div className="book-review-count">
+                    Number of Reviews{spotReviews.length}
+                    </div>
+                    </div>
+
+                    <div btn-div>
+                    <button className="RSVP-btn">Reserve Your Stay!</button>
+                    </div>
+
+                    <div className="review-container">
+                        <div className="review-stats">
+                        <div className="review-star">
+                            <i className='fa-solid fa-star' />{spot.avgStarRating.toFixed(2)}
+                        </div>
+                        <div className='review-count'>{spotReviews.length ? spotReviews.length : 'NEW'} reviews</div>
+                        </div>
+                        </div>
                     {spotReviews.reverse().map(review => 
-                    <div key={review.id}>{review.review} 
+                    <div className="rev-contains" key={review.id}>{review.review} 
                     {!sessionUser || sessionUser.id === review.userId && (<OpenModalMenuItem
                     itemText="Delete"
                     onItemClick={closeMenu}
@@ -50,17 +83,12 @@ function SpotDetailPage() {
                     />)}
                     </div>
                     )}
-                    <h1>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h1>
-                    {spot.description}
-                    ${spot.price}night
-                    STAR{spot.avgStarRating}
-                    Number of Reviews{spotReviews.length}
 
-                    {!sessionUser || reviewCheck.length > 0 || sessionUser.id !== spot.ownerId && (<OpenModalMenuItem
+                    {!sessionUser || reviewCheck.length > 0 || sessionUser.id !== spot.ownerId && (<button className="post-review-btn"><OpenModalMenuItem
                 itemText="Post Your Review"
                 onItemClick={closeMenu}
                 modalComponent={<PostAReviewModal spotId={spotId}/>}
-                />)}
+                /></button>)}
                 </div>
                 )
                 }

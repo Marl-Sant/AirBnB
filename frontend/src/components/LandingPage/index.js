@@ -25,7 +25,7 @@ function LandingPage() {
             <img className="img" src={spot.previewImage}/>
             <div className="info">{spot.city},{spot.state}</div>
             <div className="price">${spot.price} night</div>
-            <div className="info star">{spot.avgStarRating || ('NEW')}<i className='fa-solid fa-star' /></div>
+            <div className="info star">{spot.avgStarRating ? spot.avgStarRating.toFixed(2) : 'New'}<i className='fa-solid fa-star' /></div>
             </NavLink>
             </div>))}
         </div>
