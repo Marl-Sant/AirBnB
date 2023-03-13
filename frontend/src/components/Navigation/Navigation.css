@@ -1,3 +1,121 @@
 .hidden{
     visibility: hidden;
 }
+
+#main-element{
+    background-color: white;
+    position: sticky;
+    top:0px;
+    display: flex;
+    flex-wrap: wrap;
+    height: 40px;
+    width:100%;
+    margin-top: 0px;
+    border-bottom: solid black 1px;
+    padding: 0;
+    border-bottom: 5%;
+    justify-content: flex-start;
+    list-style-type: none;
+    z-index: 1;
+}
+
+.home-icon{
+    margin-top: 2px;
+    margin-left: 20px;
+    font-size: 30px;
+    color: salmon;
+    order:1;
+}
+
+.home-icon a:link{
+    text-decoration: none;
+    color: rgb(255, 90, 95);
+}
+
+.home-icon a:visited{
+    text-decoration: none;
+    color: rgb(255, 90, 95);
+}
+
+.home-icon a:hover{
+    text-decoration: none;
+    color: rgb(255, 90, 95);
+}
+
+.home-icon a:active{
+    text-decoration: none;
+    color: rgb(255, 90, 95);
+}
+
+.profile-button{
+    position: absolute;
+    margin-left: 90%;
+    margin-bottom: 40px;
+    text-align: right;
+    align-items: right;
+    font-size: 15px;
+    order:3;
+}
+
+.biggerplease{
+    font-size: 30px;
+}
+
+.profile-button li {
+    list-style-type: none;
+}
+
+.profile-button a:link,
+.profile-button a:visited,
+.profile-button a:hover,
+.profile-button a:active{
+    color: black;
+}
+
+#dropdown-styling {
+    border: solid black 2px;
+    border-radius: 5px;
+    background: white;
+    text-align: left;
+    padding:3px;
+}
+
+.create-new-spot{
+    position: absolute;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin-top: 5px;
+    margin-left: 80%;
+    order:2
+}
+
+.create-new-spot a:link{
+    text-decoration: none;
+    color: rgb(0, 166, 153);
+}
+
+.create-new-spot a:visited{
+    text-decoration: none;
+    color: rgb(0, 166, 153);
+}
+
+.create-new-spot a:hover{
+    text-decoration: none;
+    color: rgb(0, 166, 153);
+}
+
+.create-new-spot a:active{
+    text-decoration: none;
+    color: rgb(0, 166, 153);
+}
+
+.fake-link {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: black;
+    text-decoration: underline;
+    cursor: pointer;
+  }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { addSpotThunk, getSpotDetail } from '../../store/spots';
+import './AddNewSpotForm.css'
 
 const CreateNewSpotForm = ({ hideForm }) => {
 
@@ -74,84 +75,120 @@ const CreateNewSpotForm = ({ hideForm }) => {
     };
 
     return (
-        <section>
-            <form onSubmit={handleSubmit}>
+        <section className='make-spot-container'>
+            <h1>Create a new Spot</h1>
+            <h3>Where's your place located?</h3>
+            <p>Guests will only get your exact address once they booked a reservation.</p>
+            <form onSubmit={handleSubmit} className='make-spot-container'>
                 Country<input
+                    className='country-street-title-price-image-fields'
                     type="text"
                     placeholder="Country"
                     value={country}
                     onChange={updateCountry} />
                 Street Address<input
+                className='country-street-title-price-image-fields'
                     type="text"
                     placeholder="Street address"
                     required
                     value={address}
                     onChange={updateAddress} />
-                City<input
+                <div>
+                    City, State
+                </div>
+                <div className='city-state-div'>
+                <input
+                    className=''
                     type="text"
                     placeholder="City"
                     required
                     value={city}
                     onChange={updateCity} />,
-                State<input
+                <input
+                    className='street-field'
                     type="text"
                     placeholder="State"
                     required
                     value={state}
                     onChange={updateState} />
-                Latitude<input
+                </div>
+                <div>Latitude / Longitude (optional)</div>
+                <div className='city-state-div'>
+                <input
                     type="number"
                     placeholder="Lat"
                     value={lat}
                     onChange={updateLat} />
-                Longitude<input
+                <input
                     type="number"
                     placeholder="Lng"
                     value={lng}
                     onChange={updateLng} />
-                Describe your place to guests<input
+                </div>
+                
+                <h2>Describe your place to guests</h2>
+                <h4>Mention the best features of your space, any special amentities like
+fast wif or parking, and what you love about the neighborhood.</h4><input
+                className='describe-text-area'
                     type="text"
-                    placeholder="Description"
                     value={description}
                     onChange={updateDescription} />
-                Create a Title<input
+                <h2>Create a Title</h2>
+                <h4>Catch guests' attention with a spot title that highlights what makes
+your place special.</h4><input
+                className='country-street-title-price-image-fields'
                     type="text"
                     placeholder="Name"
                     value={name}
                     onChange={updateName} />
-                Price<input
+                    <div className='price-div'>
+                <h2>Set a base price for your spot
+</h2>
+                <h4>Competitive pricing can help your listing stand out and rank higher
+in search results.
+</h4><div>$<input
+                    className='country-street-title-price-image-fields'
                     type="number"
                     placeholder="Price"
                     value={price}
                     onChange={updatePrice} />
-                Photos<input
+                    </div>
+                    </div>
+                <h2>Liven up your spot with photos</h2>
+                <h4>Submit a link to at least one photo to publish your spot.</h4>
+                <input
+                className='country-street-title-price-image-fields'
                     type="text"
                     placeholder="Preview Image URL"
                     required
                     value={firstImage}
                     onChange={updateFirstImage} />
                 <input
+                className='country-street-title-price-image-fields'
                     type="text"
                     placeholder="Second Image URL"
                     value={secondImage}
                     onChange={updateSecondImage} />
                 <input
+                className='country-street-title-price-image-fields'
                     type="text"
                     placeholder="Third Image URL"
                     value={thirdImage}
                     onChange={updateThirdImage} />
                 <input
+                className='country-street-title-price-image-fields'
                     type="text"
                     placeholder="Fourth Image URL"
                     value={fourthImage}
                     onChange={updateFourthImage} />
                 <input
+                className='country-street-title-price-image-fields'
                     type="text"
                     placeholder="Fifth Image URL"
                     value={fifthImage}
                     onChange={updateFifthImage} />
-                <button type="submit">Create new Spot</button>
-                <button type="button" onClick={handleCancelClick}>Cancel</button>
+                <button type="submit" className='button-class-new-spot'>Create new Spot</button>
+                <button type="button" className='button-class-no-spot' onClick={handleCancelClick}>Cancel</button>
             </form>
         </section>
     );

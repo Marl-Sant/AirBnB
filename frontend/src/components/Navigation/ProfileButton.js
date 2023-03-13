@@ -6,6 +6,7 @@ import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import { NavLink } from "react-router-dom";
+import './Navigation.css'
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -47,19 +48,20 @@ function ProfileButton({ user }) {
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
+
   return (
-    <>
-      <button onClick={openMenu}>
-        <i className="fas fa-user-circle" />
+    <div>
+      <button className='fake-link' onClick={openMenu}>
+        <i className="fas fa-user-circle biggerplease" />
       </button>
-      <ul className={ulClassName} ref={ulRef}>
+      <ul className={`${ulClassName}`} id='dropdown-styling' ref={ulRef}>
         {user ? (
           <>
             <li>{user.username}</li>
             <li>{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
             <li>
-              <button onClick={logout}>Log Out</button>
+              <button className='fake-link' onClick={logout}>Log Out</button>
             </li>
             <li>
               <NavLink to="/spots/current">Manage your spots</NavLink>
@@ -78,12 +80,12 @@ function ProfileButton({ user }) {
               modalComponent={<SignupFormModal />}
             />
             <li>
-              <button type='submit' onClick={handleSubmit}>Demo User Login</button>
+              <button type='submit' className="fake-link" onClick={handleSubmit}>Demo User Login</button>
             </li>
           </>
         )}
       </ul>
-    </>
+    </div>
   );
 }
 

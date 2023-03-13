@@ -1,0 +1,152 @@
+.container{
+    margin-left: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+ }
+ 
+ .card > a:link,
+ .card > a:visited,
+ .card > a:hover,
+ .card > a:active{
+     text-decoration: none;
+     color: black;
+ }
+ 
+ @media only screen and (max-width: 767px) {
+     
+     .star {
+         right: calc(100% - (100% / 1) + 57%); /* Set right value based on 1-column layout */
+         
+     }
+     .card img{
+         width: 45%;
+         height: 100
+     }
+   }
+ 
+ 
+ @media only screen and (min-width: 768px) {
+     
+     .star {
+         right: calc(100% - (100% / 1) + 37%); /* Set right value based on 1-column layout */
+     }
+     .card img{
+         width: 65%;
+         height: 150
+     }
+   }
+ 
+ 
+ @media only screen and (min-width: 900px) {
+     .card {
+       width: calc(100% / 2 - 1rem); /* Set width for 2-column layout */
+       
+     }
+     .star {
+         right: calc(100% - (100% / 2) - 23%); /* Set right value based on 3-column layout */
+     }
+     .card img{
+         width: 75%;
+         height: 200
+     }
+   }
+ 
+ 
+   @media only screen and (min-width: 1024px) {
+     .card {
+       width: calc(100% / 3 - 2rem); /* Set width for 3-column layout */
+       
+     }
+     .star{
+         right: calc(100% - (100% / 3) - 50%); /* Set right value based on 3-column layout */  
+     }
+     .card img{
+         width: 85%;
+         height: 250
+     }
+   }
+ 
+   @media only screen and (min-width: 1200px) {
+     .card {
+       width: calc(100% / 4 - 2rem); /* Set width for 4-column layout */
+       font-size: 1rem
+     }
+     .star{
+         right: calc(100% - (100% / 4) - 65%); /* Set right value based on 4-column layout */  
+     }
+     .card img{
+         width: 100%;
+         height: 300px
+     }
+   }
+ 
+ 
+   
+ .card{
+    margin: 6px;
+    font-size: 1rem;
+    border: solid gray 1px;
+    border-radius: 25px;
+ }
+
+ .card:hover{
+    box-shadow: 5px 5px #888888;
+ }
+ 
+ 
+ 
+ 
+ .img{
+     position: relative;
+     display: inline;
+     border-radius: 25px;
+ }
+ 
+ 
+ 
+ .info{
+     display: flex;
+     flex: 1;    
+ }
+ 
+ .star{
+    display:flex;
+    flex-direction: row-reverse;
+    margin-right: 10px;
+    margin-bottom: 5px;
+ }
+ 
+ .price{
+   
+     font-size: 1.0rem;
+ }
+ 
+ 
+ .tooltip{
+     
+     
+     position: absolute;
+     display: flex;
+     bottom: 100%;
+     left: 50%;
+     visibility: hidden;
+     transform: translateX(-50%);
+     background-color: black;
+     color: #fff;
+     padding: 0.5rem;
+     border-radius: 0.25rem;
+     font-size: 10px !important;
+     text-align: center;
+     white-space: nowrap;
+     z-index: 2; /* higher z-index than the image */
+ }
+ 
+ 
+ .tooltip-arrow {
+     position: absolute;
+     top: 100%;
+     left: 50%;
+     border-width: 5px;
+     border-style: solid;
+     border-color: rgba(0, 0, 0, 0.7) transparent transparent;
+   }

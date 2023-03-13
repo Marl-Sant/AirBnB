@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import * as spotActions from "../../store/spots";
 import { useDispatch, useSelector } from "react-redux";
+import './LandingPage.css'
 
 
 
@@ -17,17 +18,17 @@ function LandingPage() {
 
 
     return (
-        <>
+        <div className="container">
         {isLoaded && 
-        spots.map((spot) => (<div key={spot.id}>
+        spots.map((spot) => (<div className='card' key={spot.id}>
             <NavLink to={`/spots/${spot.id}`}>
-            <img src={spot.previewImage}/>
-            <p>{spot.city},{spot.state}</p>
-            <p>${spot.price}night</p>
-            <p>{spot.avgStarRating} STARS</p>
+            <img className="img" src={spot.previewImage}/>
+            <div className="info">{spot.city},{spot.state}</div>
+            <div className="price">${spot.price} night</div>
+            <div className="info star">{spot.avgStarRating || ('NEW')}<i className='fa-solid fa-star' /></div>
             </NavLink>
             </div>))}
-        </>
+        </div>
     )
 }
 
