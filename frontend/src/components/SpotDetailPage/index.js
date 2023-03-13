@@ -55,7 +55,7 @@ function SpotDetailPage() {
                     ${spot.price}night
                     </div>
                     <div className="book-star">
-                    <i className='fa-solid fa-star' />{spot.avgStarRating.toFixed(2)}
+                    <i className='fa-solid fa-star' />{spot.avgStarRating ? spot.avgStarRating.toFixed(2) : 0}
                     </div>
                     <div className="book-review-count">
                     Number of Reviews{spotReviews.length}
@@ -69,7 +69,7 @@ function SpotDetailPage() {
                     <div className="review-container">
                         <div className="review-stats">
                         <div className="review-star">
-                            <i className='fa-solid fa-star' />{spot.avgStarRating.toFixed(2)}
+                            <i className='fa-solid fa-star' />{spot.avgStarRating ? spot.avgStarRating.toFixed(2) : 0}
                         </div>
                         <div className='review-count'>{spotReviews.length ? spotReviews.length : 'NEW'} reviews</div>
                         </div>
