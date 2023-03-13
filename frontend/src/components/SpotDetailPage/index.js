@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as spotActions from "../../store/spots";
 import * as reviewActions from "../../store/reviews"
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useRouteMatch } from "react-router-dom";
 import PostAReviewModal from "../PostAReviewModal";
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem';
 import DeleteReviewModal from '../DeleteAReviewModal'
@@ -15,6 +15,7 @@ function SpotDetailPage() {
     const spot = useSelector((state) => state.spots)
     let reviews = useSelector((state) => state.reviews)
     const sessionUser = useSelector((state) => state.session.user)
+    const match = useRouteMatch('/spots/:spotId/edit')
 
     const closeMenu = () => setShowMenu(false);
 
@@ -22,8 +23,15 @@ function SpotDetailPage() {
         dispatch(spotActions.getSpotDetail(spotId)).then(dispatch(reviewActions.populateSpotReviews(spotId))).then(() => setIsLoaded(true))
     }, [dispatch, spotId])
 
+    
+    let reviewCheck
     reviews = Object.values(reviews)
     const spotReviews = reviews.filter(review => review.spotId === Number(spotId))
+    if(sessionUser){
+        reviewCheck = reviews.filter(review => review.userId === sessionUser.id)
+    }
+    console.log(reviewCheck)
+    console.log(spotReviews)
 
     return (
         <>
@@ -31,10 +39,10 @@ function SpotDetailPage() {
                 {isLoaded && (<div>
                     <h1>{spot.name}</h1>
                     {spot.city},{spot.state},{spot.country}
-                    {spot.SpotImages.map(image => <img src={image.url}/>)}
+                    {spot.SpotImages.map(image => <img src={image.url} key={image.id}/>)}
                     <h2>{spot.city},{spot.state},{spot.country}</h2>
                     {spotReviews.reverse().map(review => 
-                    <div>{review.review} 
+                    <div key={review.id}>{review.review} 
                     {!sessionUser || sessionUser.id === review.userId && (<OpenModalMenuItem
                     itemText="Delete"
                     onItemClick={closeMenu}
@@ -48,7 +56,7 @@ function SpotDetailPage() {
                     STAR{spot.avgStarRating}
                     Number of Reviews{spot.numReviews}
 
-                    {!sessionUser || sessionUser.id !== spot.ownerId && (<OpenModalMenuItem
+                    {!sessionUser || reviewCheck.length || sessionUser.id !== spot.ownerId && (<OpenModalMenuItem
                 itemText="Post Your Review"
                 onItemClick={closeMenu}
                 modalComponent={<PostAReviewModal spotId={spotId}/>}

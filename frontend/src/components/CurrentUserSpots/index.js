@@ -24,6 +24,8 @@ function CurrentUserSpots() {
     const closeMenu = () => setShowMenu(false);
 
     return (
+        <div>
+            <h1>Manage Spots</h1>
         <div className="current-spots-container">
         {isLoaded && 
         spots.map((spot) => 
@@ -43,6 +45,7 @@ function CurrentUserSpots() {
                 /></button>
             </div>
             </div>))}
+        </div>
         </div>
     )
 }

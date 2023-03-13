@@ -1,27 +1,35 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { addSpotThunk, getSpotDetail } from '../../store/spots';
+import { addSpotThunk, getSpotDetail, getUserSpotsThunk, populateSpots } from '../../store/spots';
 import { editSpotThunk } from '../../store/spots';
 import './EditForm.css'
 
-const EditSpotForm = ({ hideForm }) => {
+const EditSpotForm = ({spot, hideForm }) => {
 
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const { spotId } = useParams()
-    const editSpot = useSelector((state) => state.spots[spotId])
+    let { spotId } = useParams()
+    const editSpot = useSelector((state) => state?.spots[spotId])
+    const user = useSelector((state)=> state?.session?.user)
+    const [isLoaded, setIsLoaded] = useState(false)
+    console.log(spotId)
+    console.log(editSpot)
+    
+    useEffect(() => {
+        dispatch(populateSpots()).then(() => setIsLoaded(true))
+    }, [dispatch]);
 
-    const [address, setAddress] = useState(editSpot.address);
-    const [city, setCity] = useState(editSpot.city);
-    const [state, setState] = useState(editSpot.state);
-    const [country, setCountry] = useState(editSpot.country);
-    const [lat, setLat] = useState(editSpot.lat);
-    const [lng, setLng] = useState(editSpot.lng);
-    const [name, setName] = useState(editSpot.name);
-    const [description, setDescription] = useState(editSpot.description);
-    const [price, setPrice] = useState(editSpot.price)
+    const [address, setAddress] = useState(editSpot?.address);
+    const [city, setCity] = useState(editSpot?.city);
+    const [state, setState] = useState(editSpot?.state);
+    const [country, setCountry] = useState(editSpot?.country);
+    const [lat, setLat] = useState(editSpot?.lat);
+    const [lng, setLng] = useState(editSpot?.lng);
+    const [name, setName] = useState(editSpot?.name);
+    const [description, setDescription] = useState(editSpot?.description);
+    const [price, setPrice] = useState(editSpot?.price)
 
     const updateLat = (e) => setLat(e.target.value);
     const updateLng = (e) => setLng(e.target.value);
@@ -33,9 +41,6 @@ const EditSpotForm = ({ hideForm }) => {
     const updateDescription = (e) => setDescription(e.target.value);
     const updatePrice = (e) => setPrice(e.target.value);
 
-    useEffect(() => {
-
-    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -66,7 +71,8 @@ const EditSpotForm = ({ hideForm }) => {
         hideForm();
     };
 
-    return (
+    return (<div>
+        {isLoaded && ( <div>
         <section className='edit-spot-container'>
             <h1>Edit your Spot</h1>
             <h3>Where's your place located?</h3>
@@ -77,6 +83,7 @@ const EditSpotForm = ({ hideForm }) => {
                     type="text"
                     placeholder="Country"
                     value={country}
+                    defaultValue={editSpot?.country}
                     onChange={updateCountry} />
                 Street Address<input
                   className='edit-country-street-title-price-image-fields'
@@ -146,6 +153,10 @@ in search results.
                 <button type="submit" className='button-class-new-spot'>Update</button>
             </form>
         </section>
+    </div>)}
+
+</div>
+
     );
 };
 

@@ -28,7 +28,9 @@ function App() {
             <CurrentUserSpots />
           </Route>
           <Route exact path ='/spots/new' component={AddNewSpotForm} />
-          <Route exact path='/spots/:spotId/edit' component={EditSpotForm} />
+          <Route exact path='/spots/:spotId/edit' /*component={EditSpotForm}*/>
+          <EditSpotForm />
+          </Route>
           <Route exact path='/spots/:spotId'>
             <SpotDetailPage />
           </Route>
